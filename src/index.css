@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  width: 93%;
+  margin: auto;
+}
+.l-height-60 {
+  line-height: 60px;
+}

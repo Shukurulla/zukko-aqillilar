@@ -1,0 +1,12 @@
+export { default as Logo } from "./logo.png";
+export { default as Note } from "./note-2.png";
+export { default as MoreSquare } from "./more-square.png";
+export { default as Computing } from "./computing.png";
+export { default as VideoHeaderIcon } from "./video-icon.png";
+export { default as Widgets } from "./widgets.png";
+export { default as PasswordCheck } from "./password-check.png";
+export { default as Play } from "./Play.png";
+export { default as Send } from "./Send.png";
+export { default as Paper } from "./Paper.png";
+export { default as Book } from "./book.png";
+export { default as Download } from "./download.png";
