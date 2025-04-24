@@ -21,7 +21,7 @@ const Login = () => {
   };
   return (
     <div>
-      <header>
+      <header className="py-4 container">
         <img src={Logo} alt="" />
       </header>
       <main className="w-100 flex justify-center py-5">

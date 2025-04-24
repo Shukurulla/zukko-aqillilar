@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Computing, Logo, MoreSquare, Note, VideoHeaderIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
+import { FiX } from "react-icons/fi";
 
 const menuItems = [
   {
     title: "Video Kurs",
     icon: VideoHeaderIcon,
-    path: "/dashboard", // sizda mavjud icon manzili
+    path: "/dashboard",
   },
   {
     title: "Materiallar",
@@ -25,14 +26,17 @@ const menuItems = [
   },
 ];
 
-const Sidebar = ({ active }) => {
+const Sidebar = ({ active, onClose }) => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-72 min-h-screen bg-white px-6 py-4 shadow-sm flex flex-col">
-      {/* Logo */}
-      <div className="flex items-center gap-2 mb-10">
-        <img src={Logo} alt="logo" className="" />
+    <aside className="w-full lg:w-auto min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
+      {/* Logo and Close Button */}
+      <div className="flex items-center justify-between mb-6">
+        <img src={Logo} alt="logo" className="w-[100px] lg:w-[130px]" />
+        <button onClick={onClose} className="lg:hidden text-gray-600">
+          <FiX size={24} />
+        </button>
       </div>
 
       {/* Menu items */}
@@ -40,8 +44,11 @@ const Sidebar = ({ active }) => {
         {menuItems.map((item) => (
           <button
             key={item.title}
-            onClick={() => navigate(item.path)}
-            className={`flex items-center gap-3 px-4 py-2 rounded-lg text-md font-medium w-full text-left transition
+            onClick={() => {
+              navigate(item.path);
+              onClose();
+            }}
+            className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
               ${
                 active === item.title
                   ? "bg-gray-100 text-[#1D2B53]"

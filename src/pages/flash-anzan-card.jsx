@@ -7,24 +7,24 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
     regularity: 1.0,
     displayCount: 1,
     sequenceLength: 1,
-    theme: "cards", // Kartalar rejimi
+    theme: "cards",
     ...initialSettings,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onStart(settings); // O'yin boshlash uchun App.js ga sozlamalarni yuboradi
+    onStart(settings);
   };
 
   // Olmos shaklidagi tugma uchun SVG
   const DiamondButton = ({ value, isSelected, onClick }) => (
     <button
       onClick={onClick}
-      className={`w-[60px] h-[60px] flex items-center justify-center transition ${
+      className={`w-10 h-10 flex items-center justify-center transition ${
         isSelected ? "text-blue-600" : "text-gray-400"
       }`}
     >
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
         <path
           d="M20 5L35 20L20 35L5 20L20 5Z"
           fill={isSelected ? "#3B82F6" : "#E5E7EB"}
@@ -34,7 +34,7 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
         <text
           x="20"
           y="24"
-          fontSize="14"
+          fontSize="12"
           fill={isSelected ? "#FFFFFF" : "#6B7280"}
           textAnchor="middle"
           fontWeight="bold"
@@ -47,17 +47,17 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
 
   // Increment/Decrement tugmalari uchun komponent
   const CounterButtons = ({ value, onIncrement, onDecrement }) => (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <button
         onClick={onDecrement}
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
       >
         -
       </button>
       <DiamondButton value={value} isSelected={true} />
       <button
         onClick={onIncrement}
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
         disabled={value >= 10}
       >
         +
@@ -66,17 +66,17 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
   );
 
   return (
-    <div className="bg-white h-screen w-[60%] mx-auto flex flex-col items-center justify-center p-8">
-      <h1 className="text-3xl font-bold text-center mb-12 text-gray-800">
+    <div className="bg-white h-screen max-w-5xl w-xl md:w-3xl  mx-auto flex flex-col items-center justify-center p-4">
+      <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
         Flash Anzan Kartalar
       </h1>
 
       {/* O'yin rejimi */}
-      <div className="mb-8 flex items-center justify-between w-full">
-        <h2 className="text-lg font-bold text-blue-600">O'yin rejimi</h2>
-        <div className="flex gap-4">
+      <div className="mb-4 flex items-center justify-between w-full">
+        <h2 className="text-base font-bold text-blue-600">O'yin rejimi</h2>
+        <div className="flex gap-2">
           <button
-            className={`px-4 py-2 rounded-full font-semibold ${
+            className={`px-3 py-1 rounded-full text-sm font-semibold ${
               settings.mode === "single"
                 ? "bg-blue-600 text-white"
                 : "text-gray-400"
@@ -86,7 +86,7 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
             Bir odamlik
           </button>
           <button
-            className={`px-4 py-2 rounded-full font-semibold ${
+            className={`px-3 py-1 rounded-full text-sm font-semibold ${
               settings.mode === "auditorium"
                 ? "bg-blue-600 text-white"
                 : "text-gray-400"
@@ -101,9 +101,9 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       </div>
 
       {/* Raqamlar soni */}
-      <div className="mb-8 flex items-center justify-between w-full">
-        <h2 className="text-lg font-bold text-blue-600">Raqamlar soni</h2>
-        <div className="flex gap-4">
+      <div className="mb-4 flex items-center justify-between w-full">
+        <h2 className="text-base font-bold text-blue-600">Raqamlar soni</h2>
+        <div className="flex gap-1">
           {[1, 2, 3].map((count) => (
             <DiamondButton
               key={count}
@@ -118,9 +118,9 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       </div>
 
       {/* Muntazamlik */}
-      <div className="mb-8 flex items-center justify-between w-full">
-        <h2 className="text-lg font-bold text-blue-600">Muntazamlik</h2>
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-4 flex items-center justify-between w-full">
+        <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
+        <div className="flex flex-wrap gap-1">
           {[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5].map(
             (time) => (
               <DiamondButton
@@ -136,11 +136,9 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
         </div>
       </div>
 
-      {/* Ko'rsatish soni */}
-
       {/* Ketma-ket kartalar soni */}
-      <div className="mb-8 flex items-center justify-between w-full">
-        <h2 className="text-lg font-bold text-blue-600">
+      <div className="mb-6 flex items-center justify-between w-full">
+        <h2 className="text-base font-bold text-blue-600">
           Ketma-ket kartalar soni
         </h2>
         <CounterButtons
@@ -161,10 +159,10 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       </div>
 
       {/* Start button */}
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-4">
         <button
           onClick={handleSubmit}
-          className="px-8 py-3 bg-blue-600 text-white text-lg font-bold rounded-full hover:bg-blue-700 transition duration-200"
+          className="px-6 py-2 bg-blue-600 text-white text-base font-bold rounded-full hover:bg-blue-700 transition duration-200"
         >
           Boshlash
         </button>
