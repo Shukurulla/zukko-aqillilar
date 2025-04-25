@@ -81,11 +81,11 @@ const Header = () => {
         {/* Desktop Navigation */}
         <div className="hidden lg:flex gap-6 items-center">
           {navItems.map((item) => (
-            <Link
+            <a
               key={item.path}
-              to={item.path}
+              href={item.path}
               className="group px-3 py-2 flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
-              onClick={closeMobileMenu}
+              // onClick={closeMobileMenu}
             >
               <img
                 src={item.icon}
@@ -93,7 +93,7 @@ const Header = () => {
                 className="w-5 h-5 group-hover:scale-110 transition-transform duration-200"
               />
               <span className="text-sm font-medium">{item.label}</span>
-            </Link>
+            </a>
           ))}
         </div>
 
@@ -124,15 +124,15 @@ const Header = () => {
             <div className="container mx-auto px-4 py-6">
               <div className="flex flex-col space-y-4">
                 {navItems.map((item) => (
-                  <Link
+                  <a
                     key={item.path}
-                    to={item.path}
+                    href={item.path}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200"
                     onClick={closeMobileMenu}
                   >
                     <img src={item.icon} alt={item.label} className="w-5 h-5" />
                     <span className="text-base font-medium">{item.label}</span>
-                  </Link>
+                  </a>
                 ))}
                 <button
                   onClick={() => {
