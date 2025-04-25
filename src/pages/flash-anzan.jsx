@@ -9,6 +9,8 @@ function FlashAnzan() {
     digitCount: "1", // '1', '2', or '3'
     regularity: "1.0", // display time in seconds
     sequenceLength: "3", // 1-10
+    operation: "add", // 'add', 'subtract', or 'mixed'
+    rowCount: "2", // 2 or 3
   });
 
   const startGame = (newSettings) => {

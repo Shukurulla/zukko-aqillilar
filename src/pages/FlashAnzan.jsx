@@ -1,13 +1,15 @@
-// FlashAnzan.js
 import { useState, useEffect, useRef } from "react";
 
 export default function FlashAnzanComponent({ settings, onEnd }) {
   const [currentNumber, setCurrentNumber] = useState(null);
+  const [currentOperation, setCurrentOperation] = useState("+");
   const [sequence, setSequence] = useState([]);
+  const [operations, setOperations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [gameState, setGameState] = useState("playing"); // 'playing', 'input', 'result'
+  const [gameState, setGameState] = useState("playing"); // 'playing', 'input', 'showButton', 'result'
   const [userAnswer, setUserAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
   const timerRef = useRef(null);
 
   // Generate a random number based on digit count
@@ -18,17 +20,45 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Generate a new sequence of numbers
+  // Generate a random operation (for mixed mode)
+  const getRandomOperation = () => {
+    return Math.random() > 0.5 ? "+" : "-";
+  };
+
+  // Generate a new sequence of numbers and operations
   const generateSequence = () => {
     const length = parseInt(settings.sequenceLength);
     const newSequence = [];
+    const newOperations = [];
+
     for (let i = 0; i < length; i++) {
       newSequence.push(generateNumber());
+
+      if (settings.operation === "mixed") {
+        newOperations.push(getRandomOperation());
+      } else if (settings.operation === "subtract") {
+        newOperations.push("-");
+      } else {
+        newOperations.push("+");
+      }
     }
+
     setSequence(newSequence);
+    setOperations(newOperations);
     setCurrentIndex(0);
     setGameState("playing");
-    setCorrectAnswer(newSequence.reduce((sum, num) => sum + num, 0));
+    setShowAnswer(false);
+
+    // Calculate correct answer
+    let answer = newSequence[0];
+    for (let i = 1; i < newSequence.length; i++) {
+      if (newOperations[i] === "+") {
+        answer += newSequence[i];
+      } else {
+        answer -= newSequence[i];
+      }
+    }
+    setCorrectAnswer(answer);
   };
 
   // Display numbers one by one
@@ -36,15 +66,21 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     if (gameState !== "playing" || currentIndex >= sequence.length) return;
 
     setCurrentNumber(sequence[currentIndex]);
+    setCurrentOperation(operations[currentIndex]);
 
     timerRef.current = setTimeout(() => {
       setCurrentNumber(null);
+      setCurrentOperation("");
 
       const nextTimer = setTimeout(() => {
         if (currentIndex + 1 < sequence.length) {
           setCurrentIndex(currentIndex + 1);
         } else {
-          setGameState("input");
+          // For audience mode, show the "Show Answer" button
+          // For single mode, show input field
+          setGameState(
+            settings.gameMode === "audience" ? "showButton" : "input"
+          );
         }
       }, 200); // Brief pause between numbers
 
@@ -52,7 +88,14 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     }, parseFloat(settings.regularity) * 1000);
 
     return () => clearTimeout(timerRef.current);
-  }, [sequence, currentIndex, gameState, settings.regularity]);
+  }, [
+    sequence,
+    operations,
+    currentIndex,
+    gameState,
+    settings.regularity,
+    settings.gameMode,
+  ]);
 
   // Start a new sequence when component mounts
   useEffect(() => {
@@ -62,7 +105,11 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isCorrect = parseInt(userAnswer) === correctAnswer;
+    setGameState("result");
+  };
+
+  const handleShowAnswer = () => {
+    setShowAnswer(true);
     setGameState("result");
   };
 
@@ -74,7 +121,7 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
   return (
     <div className="bg-white h-screen w-[100%] p-5 flex flex-col items-center justify-start">
       {/* Sarlavha va tugmalar */}
-      <div className="w-[100%] pb-5 flex  justify-between items-center mb-8 px-4">
+      <div className="w-[100%] pb-5 flex justify-between items-center mb-8 px-4">
         <button
           onClick={onEnd}
           className="w-20 h-20 text-[30px] bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
@@ -82,7 +129,7 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
           ✕
         </button>
         <h1 className="text-4xl font-bold text-center text-gray-800">
-          Flash <span className="text-blue-600 ">Anzan</span>
+          Flash <span className="text-blue-600">Anzan</span>
         </h1>
         <button
           onClick={nextSequence}
@@ -96,7 +143,8 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
       <div className="text-center">
         {gameState === "playing" && currentNumber && (
           <div className="text-7xl font-bold text-blue-600 py-16">
-            +{currentNumber}
+            {currentOperation}
+            {currentNumber}
           </div>
         )}
         {gameState === "playing" && !currentNumber && (
@@ -123,11 +171,26 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
           </form>
         )}
 
+        {gameState === "showButton" && (
+          <div className="space-y-6">
+            <button
+              onClick={handleShowAnswer}
+              className="w-48 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Natijani ko'rish
+            </button>
+          </div>
+        )}
+
         {gameState === "result" && (
           <div className="space-y-6">
             <div className="text-xl text-gray-800">
-              Sizning javobingiz: {userAnswer}
-              <br />
+              {settings.gameMode === "single" && (
+                <>
+                  Sizning javobingiz: {userAnswer}
+                  <br />
+                </>
+              )}
               To'g'ri javob: {correctAnswer}
             </div>
             <button

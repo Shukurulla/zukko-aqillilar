@@ -5,15 +5,15 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
   const [currentNumber, setCurrentNumber] = useState(null);
   const [sequence, setSequence] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [gameState, setGameState] = useState("playing"); // 'playing', 'result'
+  const [gameState, setGameState] = useState("playing"); // 'playing', 'input', 'result'
   const [correctAnswer, setCorrectAnswer] = useState(0);
-  const [userAnswer, setUserAnswer] = useState(""); // Foydalanuvchi javobi
-  const [showAnswer, setShowAnswer] = useState(false); // Javobni ko‘rsatish holati
+  const [userAnswer, setUserAnswer] = useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
   const timerRef = useRef(null);
 
   // Generate a random number (0-9) for each column
   const generateNumber = () => {
-    return Math.floor(Math.random() * 10); // 0-9 oralig‘ida tasodifiy son
+    return Math.floor(Math.random() * 10); // 0-9 range
   };
 
   // Generate a new sequence of numbers
@@ -27,7 +27,7 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     setCurrentIndex(0);
     setGameState("playing");
     setShowAnswer(false);
-    setUserAnswer(""); // Foydalanuvchi javobini tozalash
+    setUserAnswer("");
     setCorrectAnswer(newSequence.reduce((sum, num) => sum + num, 0));
   };
 
@@ -44,9 +44,9 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
         if (currentIndex + 1 < sequence.length) {
           setCurrentIndex(currentIndex + 1);
         } else {
-          setGameState("result");
+          setGameState("input"); // Change to input state instead of result
         }
-      }, 200); // Qisqa pauza
+      }, 200); // Short pause
 
       return () => clearTimeout(nextTimer);
     }, parseFloat(settings.regularity) * 1000);
@@ -64,44 +64,85 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     generateSequence();
   };
 
-  // Soroban ustunini chizish uchun komponent
+  const handleAnswerSubmit = () => {
+    setShowAnswer(true);
+    setGameState("result");
+  };
+
+  // Soroban column component with fixed positions and ALWAYS visible beads
   const SorobanColumn = ({ value }) => {
-    const fiveBeadActive = value >= 5; // Yuqoridagi bitta boncuk faolligi
-    const oneBeadsActive = value % 5; // Pastdagi boncuklar soni (0-4)
+    // Calculate which beads are active
+    const topBeadActive = value >= 5;
+    const activeBottomBeads = value % 5; // 0-4 beads can be active
 
     return (
-      <div className="relative w-32 h-80 border-2 border-gray-300 rounded-lg flex flex-col items-center justify-center">
-        {/* Markazdagi chiziq */}
-        <div className="absolute w-full h-1 bg-gray-400 top-1/3 transform -translate-y-1/2" />
+      <div className="relative w-32 h-72 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-amber-50">
+        {/* Center beam */}
+        <div className="absolute w-full h-2 bg-gray-600 top-1/3 transform -translate-y-1/2" />
 
-        {/* Yuqoridagi bitta boncuk (5) */}
+        {/* Rod */}
+        <div className="absolute w-1 h-full bg-gray-400" />
+
+        {/* Top bead (5's place) - ALWAYS visible */}
         <div
-          className={`absolute w-12 h-6 bg-blue-600 rounded transition-transform duration-300 ${
-            fiveBeadActive ? "top-36" : "top-8"
-          }`}
-        ></div>
+          className="absolute w-14 h-7 rounded-full bg-blue-600 transition-transform duration-300"
+          style={{
+            top: "7%",
+            transform: topBeadActive ? "translateY(80%)" : "translateY(10%)",
+          }}
+        />
 
-        {/* Pastdagi 4 ta boncuk (1, 2, 3, 4) */}
-        {Array.from({ length: 4 }, (_, index) => {
-          const active = index < oneBeadsActive;
-          const baseTop = 120 + index * 48; // Boncuklar orasida masofa
-          const top = active ? 48 + index * 24 : baseTop;
+        {/* Bottom beads (1's place) - ALL ALWAYS visible */}
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="absolute w-14 h-7 rounded-full bg-blue-600 transition-transform duration-300"
+            style={{
+              top: `${46 + i * 13}%`, // Fixed positions for all 4 beads
+              transform:
+                i < activeBottomBeads ? "translateY(-100%)" : "translateY(10%)",
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
 
-          return (
-            <div
-              key={index}
-              className={`absolute w-12 h-6 bg-blue-600 rounded transition-transform duration-300`}
-              style={{ top: `${top}px` }}
-            ></div>
-          );
-        })}
+  // Empty Soroban for pause between numbers
+  const EmptySoroban = () => {
+    return (
+      <div className="relative w-32 h-80 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-amber-50">
+        {/* Center beam */}
+        <div className="absolute w-full h-2 bg-gray-600 top-1/3 transform -translate-y-1/2" />
+
+        {/* Rod */}
+        <div className="absolute w-1 h-full bg-gray-400" />
+
+        {/* Top bead (5's place) - Default position */}
+        <div
+          className="absolute w-14 h-7 rounded-full bg-red-600"
+          style={{
+            top: "16%",
+          }}
+        />
+
+        {/* Bottom beads (1's place) - Default positions */}
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="absolute w-14 h-7 rounded-full bg-red-600"
+            style={{
+              top: `${45 + i * 12}%`, // Fixed positions for all 4 beads
+            }}
+          />
+        ))}
       </div>
     );
   };
 
   return (
     <div className="bg-white h-screen w-full p-5 flex flex-col items-center justify-start">
-      {/* Sarlavha va tugmalar */}
+      {/* Title and buttons */}
       <div className="w-full text-[30px] flex justify-between items-center mb-8 px-4">
         <button
           onClick={onEnd}
@@ -120,69 +161,62 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
         </button>
       </div>
 
-      {/* Soroban ustuni va natija oynasi */}
+      {/* Soroban display area - ONLY show during playing state */}
       <div className="text-center">
-        {gameState === "playing" && currentNumber !== null && (
+        {gameState === "playing" && (
           <div className="py-6">
-            <SorobanColumn value={currentNumber} />
-          </div>
-        )}
-        {gameState === "playing" && currentNumber === null && (
-          <div className="py-6 opacity-0">
-            <SorobanColumn value={0} />
-          </div>
-        )}
-
-        {gameState === "result" && settings.mode === "auditorium" && (
-          <div className="space-y-6">
-            {!showAnswer ? (
-              <div className="space-y-4">
-                <input
-                  type="number"
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Javobingizni kiriting"
-                  className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
-                />
-                <button
-                  onClick={() => setShowAnswer(true)}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
-                >
-                  Javobni ko‘rish
-                </button>
-              </div>
+            {currentNumber !== null ? (
+              <SorobanColumn value={currentNumber} />
             ) : (
-              <div className="space-y-4">
-                <div className="text-xl text-gray-800">
-                  Sizning javobingiz: {userAnswer || "Kiritilmadi"}
-                </div>
-                <div className="text-xl text-gray-800">
-                  To'g'ri javob: {correctAnswer}
-                </div>
-                <div
-                  className={`text-lg font-semibold ${
-                    parseInt(userAnswer) === correctAnswer
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {parseInt(userAnswer) === correctAnswer
-                    ? "To'g'ri!"
-                    : "Noto'g'ri!"}
-                </div>
-              </div>
+              <div>{/* <EmptySoroban /> */}</div>
             )}
-            <button
-              onClick={nextSequence}
-              className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
-            >
-              Keyingi misol
-            </button>
           </div>
         )}
 
-        {gameState === "result" && settings.mode === "single" && (
-          <div className="space-y-6">
+        {/* Input state - after numbers are shown but before showing result */}
+        {gameState === "input" && (
+          <div className="space-y-6 mt-4">
+            <div className="space-y-4">
+              <input
+                type="number"
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                placeholder="Javobingizni kiriting"
+                className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
+                autoFocus
+              />
+              <button
+                onClick={handleAnswerSubmit}
+                className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+              >
+                Javobni tekshirish
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Result state - after submitting answer */}
+        {gameState === "result" && (
+          <div className="space-y-6 mt-4">
+            <div className="space-y-4">
+              <div className="text-xl text-gray-800">
+                Sizning javobingiz: {userAnswer || "Kiritilmadi"}
+              </div>
+              <div className="text-xl text-gray-800">
+                To'g'ri javob: {correctAnswer}
+              </div>
+              <div
+                className={`text-lg font-semibold ${
+                  parseInt(userAnswer) === correctAnswer
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {parseInt(userAnswer) === correctAnswer
+                  ? "To'g'ri!"
+                  : "Noto'g'ri!"}
+              </div>
+            </div>
             <button
               onClick={nextSequence}
               className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"

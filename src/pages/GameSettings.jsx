@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function GameSettings({ onStart, initialSettings }) {
   const [settings, setSettings] = useState(initialSettings);
+  const [gameMode, setGameMode] = useState("single"); // 'single' or 'audience'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -10,7 +11,7 @@ export default function GameSettings({ onStart, initialSettings }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onStart(settings);
+    onStart({ ...settings, gameMode });
   };
 
   return (
@@ -23,10 +24,24 @@ export default function GameSettings({ onStart, initialSettings }) {
       <div className="mb-4 flex items-center gap-4 justify-between">
         <h2 className="text-base font-bold text-blue-600">O'yin rejimi</h2>
         <div className="flex gap-2">
-          <button className="px-4 py-1 text-sm text-blue-600 font-semibold bg-white rounded-full shadow-sm">
+          <button
+            className={`px-4 py-1 text-sm ${
+              gameMode === "single"
+                ? "text-blue-600 font-semibold bg-white rounded-full shadow-sm"
+                : "text-gray-400 font-semibold bg-gray-100 rounded-full"
+            }`}
+            onClick={() => setGameMode("single")}
+          >
             Bir odamlik
           </button>
-          <button className="px-4 py-1 text-sm text-gray-400 font-semibold bg-gray-100 rounded-full">
+          <button
+            className={`px-4 py-1 text-sm ${
+              gameMode === "audience"
+                ? "text-blue-600 font-semibold bg-white rounded-full shadow-sm"
+                : "text-gray-400 font-semibold bg-gray-100 rounded-full"
+            }`}
+            onClick={() => setGameMode("audience")}
+          >
             Auditoriya
           </button>
         </div>
@@ -96,52 +111,47 @@ export default function GameSettings({ onStart, initialSettings }) {
       {/* Tema */}
       <div className="mb-4 flex items-center gap-4 justify-between">
         <h2 className="text-base font-bold text-blue-600">Tema</h2>
-        <div className="relative w-48">
-          <button className="w-full px-4 py-1 bg-white text-left text-sm text-gray-800 rounded-full shadow-sm flex justify-between items-center">
-            To'g'ridan-to'g'ri qo'shish
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
+        <div className="flex gap-2">
+          <button
+            className={`px-4 py-1 text-sm ${
+              settings.operation === "add"
+                ? "text-blue-600 font-semibold bg-white shadow-sm"
+                : "text-gray-400 bg-gray-100"
+            } rounded-full`}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, operation: "add" }))
+            }
+          >
+            Qo'shish
+          </button>
+          <button
+            className={`px-4 py-1 text-sm ${
+              settings.operation === "subtract"
+                ? "text-blue-600 font-semibold bg-white shadow-sm"
+                : "text-gray-400 bg-gray-100"
+            } rounded-full`}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, operation: "subtract" }))
+            }
+          >
+            Ayirish
+          </button>
+          <button
+            className={`px-4 py-1 text-sm ${
+              settings.operation === "mixed"
+                ? "text-blue-600 font-semibold bg-white shadow-sm"
+                : "text-gray-400 bg-gray-100"
+            } rounded-full`}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, operation: "mixed" }))
+            }
+          >
+            Aralash
           </button>
         </div>
       </div>
 
       {/* Qatorlar soni */}
-      <div className="mb-4 flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">Qatorlar soni</h2>
-        <div className="flex gap-2">
-          <button
-            className={`px-4 py-1 text-sm ${
-              settings.rowCount == 2
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() => setSettings((prev) => ({ ...prev, rowCount: 2 }))}
-          >
-            2
-          </button>
-          <button
-            className={`px-4 py-1 text-sm ${
-              settings.rowCount == 3
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() => setSettings((prev) => ({ ...prev, rowCount: 3 }))}
-          >
-            3
-          </button>
-        </div>
-      </div>
 
       {/* Ketma-ket misollar soni */}
       <div className="mb-6 flex items-center gap-4 justify-between">
