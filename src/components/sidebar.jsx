@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Computing, Logo, MoreSquare, Note, VideoHeaderIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
-import { FiX } from "react-icons/fi";
+import { FiX, FiHome } from "react-icons/fi";
 
 const menuItems = [
   {
-    title: "Video Kurs",
-    icon: VideoHeaderIcon,
+    title: "Dashboard",
     path: "/dashboard",
+  },
+  {
+    title: "Video Darslar",
+    icon: VideoHeaderIcon,
+    path: "/dashboard/videos",
   },
   {
     title: "Materiallar",
@@ -55,11 +59,15 @@ const Sidebar = ({ active, onClose }) => {
                   : "text-gray-500 hover:bg-gray-50"
               }`}
           >
-            <img
-              src={item.icon}
-              alt={item.title}
-              className="w-5 h-5 object-contain"
-            />
+            {item.title == "Dashboard" ? (
+              <FiHome size={18} color="#333" />
+            ) : (
+              <img
+                src={item.icon}
+                alt={item.title}
+                className="w-5 h-5 object-contain"
+              />
+            )}
             <span>{item.title}</span>
           </button>
         ))}

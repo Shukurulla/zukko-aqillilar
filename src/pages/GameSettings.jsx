@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiChevronLeft } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function GameSettings({ onStart, initialSettings }) {
   const [settings, setSettings] = useState(initialSettings);
   const [gameMode, setGameMode] = useState("single"); // 'single' or 'audience'
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSettings((prev) => ({ ...prev, [name]: value }));
@@ -15,7 +17,15 @@ export default function GameSettings({ onStart, initialSettings }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-4xl w-3xl mx-auto p-4">
+      <div className="absolute top-10 left-20">
+        <div
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"
+        >
+          <FiChevronLeft />
+        </div>
+      </div>
       <h1 className="text-2xl font-bold text-center mb-6">
         Flash <span className="text-blue-600">Anzan</span>
       </h1>

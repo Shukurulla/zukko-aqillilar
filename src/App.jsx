@@ -8,6 +8,7 @@ import Layout from "./pages/layout";
 import Videos from "./pages/videos";
 import Materials from "./pages/materials";
 import { Toaster } from "react-hot-toast";
+import Dashboard from "./pages/dashboard";
 
 function App() {
   return (
@@ -21,7 +22,11 @@ function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route
           path="/dashboard"
-          element={<Layout activePage={<Videos />} page={"Video Kurs"} />}
+          element={<Layout activePage={<Dashboard />} page={"Dashboard"} />}
+        />
+        <Route
+          path="/dashboard/videos"
+          element={<Layout activePage={<Videos />} page={"Video Darslar"} />}
         />
         <Route
           path="/dashboard/materials"

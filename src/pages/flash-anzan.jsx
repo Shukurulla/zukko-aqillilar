@@ -2,6 +2,7 @@
 import { useState } from "react";
 import GameSettings from "./GameSettings";
 import FlashAnzanComponent from "./FlashAnzan";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
 function FlashAnzan() {
   const [gameStarted, setGameStarted] = useState(false);
@@ -23,13 +24,15 @@ function FlashAnzan() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      {!gameStarted ? (
-        <GameSettings onStart={startGame} initialSettings={settings} />
-      ) : (
-        <FlashAnzanComponent settings={settings} onEnd={endGame} />
-      )}
-    </div>
+    <>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        {!gameStarted ? (
+          <GameSettings onStart={startGame} initialSettings={settings} />
+        ) : (
+          <FlashAnzanComponent settings={settings} onEnd={endGame} />
+        )}
+      </div>
+    </>
   );
 }
 

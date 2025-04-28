@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FiChevronLeft } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function FlashAnzanCard({ onStart, initialSettings }) {
   const [settings, setSettings] = useState({
@@ -64,9 +66,18 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       </button>
     </div>
   );
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white h-screen max-w-5xl w-xl md:w-3xl  mx-auto flex flex-col items-center justify-center p-4">
+      <div className="absolute top-10 left-20">
+        <div
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"
+        >
+          <FiChevronLeft />
+        </div>
+      </div>
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
         Flash Anzan Kartalar
       </h1>
