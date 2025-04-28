@@ -29,7 +29,7 @@ const Dashboard = () => {
 
         {/* Videos Card */}
         <Link
-          to="/videos"
+          to="/dashboard/videos"
           className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
         >
           <div className="flex items-center">
