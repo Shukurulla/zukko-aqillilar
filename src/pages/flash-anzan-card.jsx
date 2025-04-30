@@ -132,18 +132,18 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       <div className="mb-4 flex items-center justify-between w-full">
         <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
         <div className="flex flex-wrap gap-1">
-          {[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5].map(
-            (time) => (
-              <DiamondButton
-                key={time}
-                value={time}
-                isSelected={settings.regularity === time}
-                onClick={() =>
-                  setSettings((prev) => ({ ...prev, regularity: time }))
-                }
-              />
-            )
-          )}
+          {[
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
+          ].map((time) => (
+            <DiamondButton
+              key={time}
+              value={time}
+              isSelected={settings.regularity === time}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, regularity: time }))
+              }
+            />
+          ))}
         </div>
       </div>
 
