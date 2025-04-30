@@ -1,8 +1,10 @@
 import React from "react";
 import { PrimaryButton } from "./button";
 import { hero } from "../../public/images";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#F2F5F9] container w-full mx-auto rounded-3xl md:rounded-[64px] px-6 py-12 md:p-16 lg:p-[100px]">
       <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-10">
@@ -17,9 +19,12 @@ const Hero = () => {
             tezligingiz bilan o'rganing va o'rgating
           </p>
           <div className="flex justify-start lg:justify-start">
-            <PrimaryButton className="px-8 py-3 text-base md:text-lg">
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="px-8 py-3 text-xl text-md bg-[#255ED6] text-white rounded-full"
+            >
               Boshlash
-            </PrimaryButton>
+            </button>
           </div>
         </div>
 

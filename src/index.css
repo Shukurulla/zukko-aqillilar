@@ -31,11 +31,3 @@ body {
 .book {
   height: 100%;
 }
-.hexagon {
-  width: 24px;
-  height: 28px;
-  background-color: #3b82f6;
-  position: relative;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  transition: all 0.3s ease;
-}
