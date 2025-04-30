@@ -44,7 +44,8 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
         if (currentIndex + 1 < sequence.length) {
           setCurrentIndex(currentIndex + 1);
         } else {
-          setGameState("input"); // Change to input state instead of result
+          // Har doim "input" holatiga o'tamiz, auditorium ham, single ham
+          setGameState("input");
         }
       }, 200); // Short pause
 
@@ -66,6 +67,10 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
 
   const handleAnswerSubmit = () => {
     setShowAnswer(true);
+    setGameState("result");
+  };
+
+  const showResult = () => {
     setGameState("result");
   };
 
@@ -108,38 +113,6 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     );
   };
 
-  // Empty Soroban for pause between numbers
-  const EmptySoroban = () => {
-    return (
-      <div className="relative w-32 h-80 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-amber-50">
-        {/* Center beam */}
-        <div className="absolute w-full h-2 bg-gray-600 top-1/3 transform -translate-y-1/2" />
-
-        {/* Rod */}
-        <div className="absolute w-1 h-full bg-gray-400" />
-
-        {/* Top bead (5's place) - Default position */}
-        <div
-          className="absolute w-14 h-7 rounded-full bg-red-600"
-          style={{
-            top: "16%",
-          }}
-        />
-
-        {/* Bottom beads (1's place) - Default positions */}
-        {[0, 1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="absolute w-14 h-7 rounded-full bg-red-600"
-            style={{
-              top: `${45 + i * 12}%`, // Fixed positions for all 4 beads
-            }}
-          />
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="bg-white h-screen w-full p-5 flex flex-col items-center justify-start">
       {/* Title and buttons */}
@@ -173,25 +146,38 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
           </div>
         )}
 
-        {/* Input state - after numbers are shown but before showing result */}
+        {/* Input state - for both modes */}
         {gameState === "input" && (
           <div className="space-y-6 mt-4">
-            <div className="space-y-4">
-              <input
-                type="number"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                placeholder="Javobingizni kiriting"
-                className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
-                autoFocus
-              />
+            {/* Single mode - show input field */}
+            {settings.mode === "single" && (
+              <div className="space-y-4">
+                <input
+                  type="number"
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  placeholder="Javobingizni kiriting"
+                  className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
+                  autoFocus
+                />
+                <button
+                  onClick={handleAnswerSubmit}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+                >
+                  Javobni tekshirish
+                </button>
+              </div>
+            )}
+
+            {/* Auditorium mode - show answer button */}
+            {settings.mode === "auditorium" && (
               <button
-                onClick={handleAnswerSubmit}
+                onClick={showResult}
                 className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
               >
-                Javobni tekshirish
+                Natijani ko'rish
               </button>
-            </div>
+            )}
           </div>
         )}
 
@@ -199,23 +185,29 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
         {gameState === "result" && (
           <div className="space-y-6 mt-4">
             <div className="space-y-4">
-              <div className="text-xl text-gray-800">
-                Sizning javobingiz: {userAnswer || "Kiritilmadi"}
-              </div>
+              {/* Only show user answer in single mode */}
+              {settings.mode === "single" && (
+                <div className="text-xl text-gray-800">
+                  Sizning javobingiz: {userAnswer || "Kiritilmadi"}
+                </div>
+              )}
               <div className="text-xl text-gray-800">
                 To'g'ri javob: {correctAnswer}
               </div>
-              <div
-                className={`text-lg font-semibold ${
-                  parseInt(userAnswer) === correctAnswer
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                {parseInt(userAnswer) === correctAnswer
-                  ? "To'g'ri!"
-                  : "Noto'g'ri!"}
-              </div>
+              {/* Only show correctness in single mode */}
+              {settings.mode === "single" && (
+                <div
+                  className={`text-lg font-semibold ${
+                    parseInt(userAnswer) === correctAnswer
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {parseInt(userAnswer) === correctAnswer
+                    ? "To'g'ri!"
+                    : "Noto'g'ri!"}
+                </div>
+              )}
             </div>
             <button
               onClick={nextSequence}

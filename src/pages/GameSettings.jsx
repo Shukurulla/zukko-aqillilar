@@ -98,23 +98,23 @@ export default function GameSettings({ onStart, initialSettings }) {
       <div className="mb-4 flex items-center gap-4 justify-between">
         <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
         <div className="flex flex-wrap gap-1">
-          {[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5].map(
-            (time) => (
-              <button
-                key={time}
-                className={`w-6 h-6 flex items-center justify-center rounded-full text-xs ${
-                  settings.regularity == time
-                    ? "bg-blue-600 text-white font-semibold"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-                onClick={() =>
-                  setSettings((prev) => ({ ...prev, regularity: time }))
-                }
-              >
-                {time}
-              </button>
-            )
-          )}
+          {[
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
+          ].map((time) => (
+            <button
+              key={time}
+              className={`w-6 h-6 flex items-center justify-center rounded-full text-xs ${
+                settings.regularity == time
+                  ? "bg-blue-600 text-white font-semibold"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, regularity: time }))
+              }
+            >
+              {time}
+            </button>
+          ))}
         </div>
       </div>
 
