@@ -17,8 +17,8 @@ export default function GameSettings({ onStart, initialSettings }) {
   };
 
   return (
-    <div className="max-w-4xl w-3xl mx-auto p-4">
-      <div className="absolute top-10 left-20">
+    <div className="bg-white h-screen w-[90%] mx-auto  p-4">
+      <div className="absolute top-5 left-5">
         <div
           onClick={() => navigate(-1)}
           className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"

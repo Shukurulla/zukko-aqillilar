@@ -60,31 +60,6 @@ const LandingPage = () => {
 
         <FAQSection />
 
-        {/* Newsletter Section */}
-        <section className="container px-4 py-12 md:py-20">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold">
-              Savollaringizga javob oling
-            </h1>
-            <p className="text-lg md:text-xl text-[#666680] font-medium mt-4">
-              Savollaringizga javob oling va chegirmalarga ega bo'ling
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Emailingizni kiriting"
-                className="flex-grow px-6 py-3 bg-[#F8FAFE] text-base md:text-lg outline-none rounded-full"
-              />
-              <PrimaryButton className="w-full sm:w-auto px-8 py-3">
-                Yuborish
-              </PrimaryButton>
-            </div>
-          </div>
-        </section>
-
         {/* Footer */}
         <footer className="container px-4 py-12 md:py-20">
           <div className="bg-[#F2F5F9] rounded-3xl lg:rounded-[64px] p-8 md:p-12 lg:p-16">
