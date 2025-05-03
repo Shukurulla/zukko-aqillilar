@@ -63,7 +63,7 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
             setTimeout(() => inputRef.current?.focus(), 100);
           }
         }
-      }, 200);
+      }, 0);
     }, parseFloat(settings.regularity) * 1000);
 
     return () => clearTimeout(timerRef.current);

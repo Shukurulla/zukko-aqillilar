@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiChevronLeft } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 export default function FlashAnzanCard({ onStart, initialSettings }) {
@@ -66,10 +66,33 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       </button>
     </div>
   );
+
   const navigate = useNavigate();
 
+  // Muntazamlik uchun slider logikasi (mobile uchun)
+  const regularityTimes = [
+    0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
+  ];
+  const [regStartIndex, setRegStartIndex] = useState(0);
+
+  const visibleRegularities = [
+    regularityTimes[regStartIndex % regularityTimes.length],
+    regularityTimes[(regStartIndex + 1) % regularityTimes.length],
+    regularityTimes[(regStartIndex + 2) % regularityTimes.length],
+  ];
+
+  const handlePrevReg = () => {
+    setRegStartIndex(
+      (prev) => (prev - 1 + regularityTimes.length) % regularityTimes.length
+    );
+  };
+
+  const handleNextReg = () => {
+    setRegStartIndex((prev) => (prev + 1) % regularityTimes.length);
+  };
+
   return (
-    <div className="bg-white h-screen w-[100%]  md:w-[70%] lg:w-[70%] mx-auto flex flex-col items-center justify-start p-5">
+    <div className="bg-white h-screen w-[100%] md:w-[70%] lg:w-[70%] mx-auto flex flex-col items-center justify-start p-5">
       <div className="absolute top-5 left-5">
         <div
           onClick={() => navigate(-1)}
@@ -132,15 +155,13 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
         </div>
       </div>
 
-      {/* Muntazamlik */}
-      <div className="mb-4 flex items-center justify-between w-full">
+      {/* Muntazamlik - Desktop ko'rinish */}
+      <div className="hidden md:flex mb-4 flex-wrap gap-2 items-center justify-between w-full">
         <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
           Muntazamlik
         </h2>
-        <div className="flex flex-wrap ">
-          {[
-            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
-          ].map((time) => (
+        <div className="flex flex-wrap gap-2">
+          {regularityTimes.map((time) => (
             <DiamondButton
               key={time}
               value={time}
@@ -150,6 +171,37 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
               }
             />
           ))}
+        </div>
+      </div>
+
+      {/* Muntazamlik - Mobile slider */}
+      <div className="md:hidden flex items-center justify-between mb-4 w-full">
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
+          Muntazamlik
+        </h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrevReg}
+            className="text-blue-600 text-lg font-bold"
+          >
+            <FiChevronLeft />
+          </button>
+          {visibleRegularities.map((time) => (
+            <DiamondButton
+              key={time}
+              value={time}
+              isSelected={settings.regularity === time}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, regularity: time }))
+              }
+            />
+          ))}
+          <button
+            onClick={handleNextReg}
+            className="text-blue-600 text-lg font-bold"
+          >
+            <FiChevronRight />
+          </button>
         </div>
       </div>
 
