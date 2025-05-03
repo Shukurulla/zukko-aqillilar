@@ -27,12 +27,12 @@ const menuItems = [
   {
     title: "Flash Kartalar",
     icon: MoreSquare,
-    path: "/flash-card",
+    path: "/dashboard/flash-card",
   },
   {
     title: "Flash Anzan",
     icon: Computing,
-    path: "/flash-anzan",
+    path: "/dashboard/flash-anzan",
   },
   {
     title: "Memory Game",

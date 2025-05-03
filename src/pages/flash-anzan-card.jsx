@@ -90,17 +90,21 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
   const handleNextReg = () => {
     setRegStartIndex((prev) => (prev + 1) % regularityTimes.length);
   };
-
+  const token = localStorage.getItem("flash-jwt");
   return (
     <div className="bg-white h-screen w-[100%] md:w-[70%] lg:w-[70%] mx-auto flex flex-col items-center justify-start p-5">
-      <div className="absolute top-5 left-5">
-        <div
-          onClick={() => navigate(-1)}
-          className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"
-        >
-          <FiChevronLeft />
+      {token ? (
+        ""
+      ) : (
+        <div className="absolute top-5 left-5">
+          <div
+            onClick={() => navigate(-1)}
+            className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"
+          >
+            <FiChevronLeft />
+          </div>
         </div>
-      </div>
+      )}
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">
         Flash Anzan Kartalar
       </h1>

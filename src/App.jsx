@@ -37,6 +37,19 @@ function App() {
           path="/dashboard/memory-game"
           element={<Layout activePage={<MemoryGame />} page={"Memory Game"} />}
         />
+        <Route
+          path="/dashboard/flash-anzan"
+          element={<Layout activePage={<FlashAnzan />} page={"Flash Anzan"} />}
+        />
+        <Route
+          path="/dashboard/flash-card"
+          element={
+            <Layout
+              activePage={<FlashAnzanCardWrapper />}
+              page={"Flash Kartalar"}
+            />
+          }
+        />
       </Routes>
     </>
   );
