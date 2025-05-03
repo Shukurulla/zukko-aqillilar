@@ -1,24 +1,28 @@
 import axios from "../services/api";
 import { FiCheck, FiClock, FiLock, FiList, FiX } from "react-icons/fi";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const Videos = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentVideoId, setCurrentVideoId] = useState(1);
   const [isVideoListOpen, setIsVideoListOpen] = useState(false);
+  const { user } = useSelector((state) => state.user);
+  const role = localStorage.getItem("role");
+  const { id } = useParams();
+  const currentVideoId = parseInt(id, 10) || 1;
 
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
-      const { data } = await axios.get("/api/user/lessons");
+      const { data } = await axios.get(`/api/${role}/lessons`);
       console.log(data.data);
-
       setVideos(data.data);
       setLoading(false);
     };
     fetchVideos();
-  }, []);
+  }, [user]);
 
   const handleNextLesson = async () => {
     const currentIndex = videos.findIndex(
@@ -28,10 +32,10 @@ const Videos = () => {
       const updatedVideos = [...videos];
       updatedVideos[currentIndex].complate = true;
       setVideos(updatedVideos);
-      setCurrentVideoId(videos[currentIndex + 1].id);
+      window.location.href = `/dashboard/videos/${videos[currentIndex + 1].id}`;
     }
     const { data } = await axios.post(
-      `/api/user/lesson/complate/${currentVideoId}`
+      `/api/${role}/lesson/complate/${currentVideoId}`
     );
     console.log(data);
   };
@@ -64,7 +68,7 @@ const Videos = () => {
             <div className="text-gray-500 text-sm">Yuklanmoqda...</div>
           ) : (
             <video controls className="w-full h-full object-contain">
-              <source src={currentVideo.link} />
+              <source src={currentVideo?.link} />
             </video>
           )}
         </div>
@@ -113,7 +117,7 @@ const Videos = () => {
             }`}
             onClick={() => {
               if (video.complate || video.id === 1) {
-                setCurrentVideoId(video.id);
+                window.location.href = `/dashboard/videos/${video.id}`;
                 setIsVideoListOpen(false);
               }
             }}

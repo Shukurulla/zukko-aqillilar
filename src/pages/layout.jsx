@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
+import UserService from "../services/user.service";
+import { useDispatch, useSelector } from "react-redux";
 
 const Layout = ({ activePage, page }) => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const token = localStorage.getItem("flash-jwt");
+    const role = localStorage.getItem("role");
+
     if (!token) {
       navigate("/auth/login");
     }
+    UserService.profile(dispatch, role);
   }, [activePage, page]);
 
   return (

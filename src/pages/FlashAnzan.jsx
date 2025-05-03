@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import { FiRefreshCw, FiX, FiCheck, FiChevronRight } from "react-icons/fi";
 export default function FlashAnzanComponent({ settings, onEnd }) {
   const [currentNumber, setCurrentNumber] = useState(null);
   const [currentOperation, setCurrentOperation] = useState("+");
@@ -124,18 +124,18 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
       <div className="w-[100%] pb-5 flex justify-between items-center mb-8 px-4">
         <button
           onClick={onEnd}
-          className="w-20 h-20 text-[30px] bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+          className="w-16 h-16 text-[30px] bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
         >
-          ✕
+          <FiX />
         </button>
         <h1 className="text-4xl font-bold text-center text-gray-800">
           Flash <span className="text-blue-600">Anzan</span>
         </h1>
         <button
           onClick={nextSequence}
-          className="w-20 h-20 text-[30px] bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+          className="w-16 h-16  text-[30px] bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
         >
-          ⟳
+          <FiRefreshCw />
         </button>
       </div>
 

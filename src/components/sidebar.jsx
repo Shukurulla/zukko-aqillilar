@@ -1,18 +1,24 @@
 import { useState } from "react";
-import { Computing, Logo, MoreSquare, Note, VideoHeaderIcon } from "../assets";
+import {
+  Computing,
+  game,
+  Logo,
+  MoreSquare,
+  Note,
+  studentLogo,
+  teacherLogo,
+  VideoHeaderIcon,
+} from "../assets";
 import { useNavigate } from "react-router-dom";
 import { FiX, FiHome, FiLogOut } from "react-icons/fi";
-
+const role = localStorage.getItem("role");
 const menuItems = [
   {
-    title: "Dashboard",
-    path: "/dashboard",
-  },
-  {
     title: "Video Darslar",
+    path: "/dashboard",
     icon: VideoHeaderIcon,
-    path: "/dashboard/videos",
   },
+
   {
     title: "Materiallar",
     icon: Note,
@@ -27,6 +33,11 @@ const menuItems = [
     title: "Flash Anzan",
     icon: Computing,
     path: "/flash-anzan",
+  },
+  {
+    title: "Memory Game",
+    icon: game,
+    path: "/dashboard/memory-game",
   },
 ];
 
@@ -71,7 +82,11 @@ const Sidebar = ({ active, onClose }) => {
       <aside className="w-full lg:w-auto min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
-            <img src={Logo} alt="logo" className="w-[100px] lg:w-[130px]" />
+            <img
+              src={role == "student" ? studentLogo : teacherLogo}
+              alt="logo"
+              className="w-[180px] lg:w-[180px]"
+            />
             <button onClick={onClose} className="lg:hidden text-gray-600">
               <FiX size={24} />
             </button>
@@ -86,22 +101,22 @@ const Sidebar = ({ active, onClose }) => {
                   navigate(item.path);
                   onClose();
                 }}
-                className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
+                className={`flex ${
+                  role == "teacher" && item.title == "Memory Game"
+                    ? "hidden"
+                    : ""
+                } items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
                 ${
                   active === item.title
                     ? "bg-gray-100 text-[#1D2B53]"
                     : "text-gray-500 hover:bg-gray-50"
                 }`}
               >
-                {item.title == "Dashboard" ? (
-                  <FiHome size={18} color="#333" />
-                ) : (
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className="w-5 h-5 object-contain"
-                  />
-                )}
+                <img
+                  src={item.icon}
+                  alt={item.title}
+                  className="w-5 h-5 object-contain"
+                />
                 <span>{item.title}</span>
               </button>
             ))}

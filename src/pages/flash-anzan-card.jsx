@@ -69,7 +69,7 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white h-screen w-[90%] mx-auto flex flex-col items-center justify-center p-4">
+    <div className="bg-white h-screen w-[100%]  md:w-[70%] lg:w-[70%] mx-auto flex flex-col items-center justify-start p-5">
       <div className="absolute top-5 left-5">
         <div
           onClick={() => navigate(-1)}
@@ -78,13 +78,15 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
           <FiChevronLeft />
         </div>
       </div>
-      <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+      <h1 className="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">
         Flash Anzan Kartalar
       </h1>
 
       {/* O'yin rejimi */}
       <div className="mb-4 flex items-center justify-between w-full">
-        <h2 className="text-base font-bold text-blue-600">O'yin rejimi</h2>
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
+          O'yin rejimi
+        </h2>
         <div className="flex gap-2">
           <button
             className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -113,7 +115,9 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
 
       {/* Raqamlar soni */}
       <div className="mb-4 flex items-center justify-between w-full">
-        <h2 className="text-base font-bold text-blue-600">Raqamlar soni</h2>
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
+          Raqamlar soni
+        </h2>
         <div className="flex gap-1">
           {[1, 2, 3].map((count) => (
             <DiamondButton
@@ -130,7 +134,9 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
 
       {/* Muntazamlik */}
       <div className="mb-4 flex items-center justify-between w-full">
-        <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
+          Muntazamlik
+        </h2>
         <div className="flex flex-wrap ">
           {[
             0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
@@ -149,7 +155,7 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
 
       {/* Ketma-ket kartalar soni */}
       <div className="mb-6 flex items-center justify-between w-full">
-        <h2 className="text-base font-bold text-blue-600">
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-blue-600">
           Ketma-ket kartalar soni
         </h2>
         <CounterButtons
@@ -173,7 +179,7 @@ export default function FlashAnzanCard({ onStart, initialSettings }) {
       <div className="flex justify-center mt-4">
         <button
           onClick={handleSubmit}
-          className="px-6 py-2 bg-blue-600 text-white text-base font-bold rounded-full hover:bg-blue-700 transition duration-200"
+          className="w-80 py-3 bg-blue-600 text-white text-base font-bold rounded-full hover:bg-blue-700 transition duration-200"
         >
           Boshlash
         </button>

@@ -9,6 +9,7 @@ import Videos from "./pages/videos";
 import Materials from "./pages/materials";
 import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/dashboard";
+import MemoryGame from "./pages/memory-game";
 
 function App() {
   return (
@@ -22,15 +23,19 @@ function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route
           path="/dashboard"
-          element={<Layout activePage={<Dashboard />} page={"Dashboard"} />}
+          element={<Layout activePage={<Dashboard />} page={"Video Darslar"} />}
         />
         <Route
-          path="/dashboard/videos"
+          path="/dashboard/videos/:id"
           element={<Layout activePage={<Videos />} page={"Video Darslar"} />}
         />
         <Route
           path="/dashboard/materials"
           element={<Layout activePage={<Materials />} page={"Materiallar"} />}
+        />
+        <Route
+          path="/dashboard/memory-game"
+          element={<Layout activePage={<MemoryGame />} page={"Memory Game"} />}
         />
       </Routes>
     </>

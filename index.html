@@ -19,5 +19,88 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- <div className="text-center">
+        {gameState === "playing" && (
+          <div className="py-6">
+            {currentNumber !== null ? (
+              <SorobanColumn value={currentNumber} />
+            ) : (
+              <div>{/* <EmptySoroban /> */}</div>
+            )}
+          </div>
+        )}
+
+        {/* Input state - for both modes */}
+        {gameState === "input" && (
+          <div className="space-y-6 mt-4">
+            {/* Single mode - show input field */}
+            {settings.mode === "single" && (
+              <div className="space-y-4">
+                <input
+                  type="number"
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  placeholder="Javobingizni kiriting"
+                  className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
+                  autoFocus
+                />
+                <button
+                  onClick={handleAnswerSubmit}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+                >
+                  Javobni tekshirish
+                </button>
+              </div>
+            )}
+
+            {/* Auditorium mode - show answer button */}
+            {settings.mode === "auditorium" && (
+              <button
+                onClick={showResult}
+                className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+              >
+                Natijani ko'rish
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Result state - after submitting answer */}
+        {gameState === "result" && (
+          <div className="space-y-6 mt-4">
+            <div className="space-y-4">
+              {/* Only show user answer in single mode */}
+              {settings.mode === "single" && (
+                <div className="text-xl text-gray-800">
+                  Sizning javobingiz: {userAnswer || "Kiritilmadi"}
+                </div>
+              )}
+              <div className="text-xl text-gray-800">
+                To'g'ri javob: {correctAnswer}
+              </div>
+              {/* Only show correctness in single mode */}
+              {settings.mode === "single" && (
+                <div
+                  className={`text-lg font-semibold ${
+                    parseInt(userAnswer) === correctAnswer
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {parseInt(userAnswer) === correctAnswer
+                    ? "To'g'ri!"
+                    : "Noto'g'ri!"}
+                </div>
+              )}
+            </div>
+            <button
+              onClick={nextSequence}
+              className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+            >
+              Keyingi misol
+            </button>
+          </div>
+        )}
+      </div> -->
   </body>
 </html>

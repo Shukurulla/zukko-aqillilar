@@ -1,28 +1,40 @@
 import { useState, useEffect, useRef } from "react";
-import { FiRefreshCw, FiX } from "react-icons/fi";
+import { FiRefreshCw, FiX, FiCheck, FiChevronRight } from "react-icons/fi";
+import { rectangle } from "../assets";
 
 export default function FlashAnzanComponent({ settings, onEnd }) {
   const [currentNumber, setCurrentNumber] = useState(null);
   const [sequence, setSequence] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [gameState, setGameState] = useState("playing"); // 'playing', 'input', 'result'
+  const [gameState, setGameState] = useState("playing");
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
   const [showAnswer, setShowAnswer] = useState(false);
+  const [displayedSegments, setDisplayedSegments] = useState(Array(7).fill(1));
+  const inputRef = useRef(null);
   const timerRef = useRef(null);
 
-  // Generate a random number (0-9) for each column
-  const generateNumber = () => {
-    return Math.floor(Math.random() * 10); // 0-9 range
+  // Segmentlarni generatsiya qilish (tepadan 1 ta, pastdan 1 ta o'chirilgan)
+  const generateSegments = () => {
+    const segments = Array(7).fill(1);
+
+    // Tepadagi 2 ta segmentdan 1 tasini o'chiramiz
+    const topSegmentToHide = Math.floor(Math.random() * 2); // 0 yoki 1
+    segments[topSegmentToHide] = 0;
+
+    // Pastdagi 5 ta segmentdan 1 tasini o'chiramiz
+    const bottomSegmentToHide = 2 + Math.floor(Math.random() * 5); // 2-6
+    segments[bottomSegmentToHide] = 0;
+
+    return segments;
   };
 
-  // Generate a new sequence of numbers
+  const generateNumber = () => Math.floor(Math.random() * 10);
+
   const generateSequence = () => {
     const length = parseInt(settings.sequenceLength);
-    const newSequence = [];
-    for (let i = 0; i < length; i++) {
-      newSequence.push(generateNumber());
-    }
+    const newSequence = Array(length).fill().map(generateNumber);
+
     setSequence(newSequence);
     setCurrentIndex(0);
     setGameState("playing");
@@ -31,39 +43,36 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
     setCorrectAnswer(newSequence.reduce((sum, num) => sum + num, 0));
   };
 
-  // Display numbers one by one
   useEffect(() => {
     if (gameState !== "playing" || currentIndex >= sequence.length) return;
 
-    setCurrentNumber(sequence[currentIndex]);
+    const currentNum = sequence[currentIndex];
+    setCurrentNumber(currentNum);
+    setDisplayedSegments(generateSegments());
 
     timerRef.current = setTimeout(() => {
       setCurrentNumber(null);
+      setDisplayedSegments(Array(7).fill(0));
 
-      const nextTimer = setTimeout(() => {
+      setTimeout(() => {
         if (currentIndex + 1 < sequence.length) {
           setCurrentIndex(currentIndex + 1);
         } else {
-          // Har doim "input" holatiga o'tamiz, auditorium ham, single ham
           setGameState("input");
+          if (settings.mode === "single") {
+            setTimeout(() => inputRef.current?.focus(), 100);
+          }
         }
-      }, 200); // Short pause
-
-      return () => clearTimeout(nextTimer);
+      }, 200);
     }, parseFloat(settings.regularity) * 1000);
 
     return () => clearTimeout(timerRef.current);
-  }, [sequence, currentIndex, gameState, settings.regularity]);
+  }, [sequence, currentIndex, gameState, settings]);
 
-  // Start a new sequence when component mounts
   useEffect(() => {
     generateSequence();
     return () => clearTimeout(timerRef.current);
   }, []);
-
-  const nextSequence = () => {
-    generateSequence();
-  };
 
   const handleAnswerSubmit = () => {
     setShowAnswer(true);
@@ -71,153 +80,140 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
   };
 
   const showResult = () => {
+    setShowAnswer(true);
     setGameState("result");
   };
 
-  // Soroban column component with fixed positions and ALWAYS visible beads
-  const SorobanColumn = ({ value }) => {
-    // Calculate which beads are active
-    const topBeadActive = value >= 5;
-    const activeBottomBeads = value % 5; // 0-4 beads can be active
-
-    return (
-      <div className="relative w-32 h-72 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-amber-50">
-        {/* Center beam */}
-        <div className="absolute w-full h-2 bg-gray-600 top-1/3 transform -translate-y-1/2" />
-
-        {/* Rod */}
-        <div className="absolute w-1 h-full bg-gray-400" />
-
-        {/* Top bead (5's place) - ALWAYS visible */}
-        <div
-          className="absolute w-14 h-7 rounded-full bg-blue-600 transition-transform duration-300"
-          style={{
-            top: "7%",
-            transform: topBeadActive ? "translateY(80%)" : "translateY(10%)",
-          }}
-        />
-
-        {/* Bottom beads (1's place) - ALL ALWAYS visible */}
-        {[0, 1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="absolute w-14 h-7 rounded-full bg-blue-600 transition-transform duration-300"
-            style={{
-              top: `${46 + i * 13}%`, // Fixed positions for all 4 beads
-              transform:
-                i < activeBottomBeads ? "translateY(-100%)" : "translateY(10%)",
-            }}
-          />
-        ))}
-      </div>
-    );
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleAnswerSubmit();
   };
 
+  const isAnswerCorrect = parseInt(userAnswer) === correctAnswer;
+
   return (
-    <div className="bg-white h-screen w-full p-5 flex flex-col items-center justify-start">
-      {/* Title and buttons */}
-      <div className="w-full text-[30px] flex justify-between items-center mb-8 px-4">
+    <div className="bg-white h-screen w-full lg:w-[80%] p-5 flex flex-col items-center justify-start">
+      {/* Sarlavha va tugmalar */}
+      <div className="w-full flex justify-between items-center mb-8 px-4">
         <button
           onClick={onEnd}
-          className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+          className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
         >
-          <FiX />
+          <FiX size={20} />
         </button>
-        <h1 className="text-2xl font-bold text-center text-gray-800">
-          Flash Anzan Kartalar
-        </h1>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800">Flash Anzan</h1>
+          <p className="text-sm text-gray-500">
+            {settings.mode === "auditorium"
+              ? "Auditorium rejimi"
+              : "Yakka o'yinchi"}
+          </p>
+        </div>
         <button
-          onClick={nextSequence}
-          className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+          onClick={generateSequence}
+          className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
         >
-          <FiRefreshCw />
+          <FiRefreshCw size={20} />
         </button>
       </div>
 
-      {/* Soroban display area - ONLY show during playing state */}
-      <div className="text-center">
-        {gameState === "playing" && (
-          <div className="py-6">
-            {currentNumber !== null ? (
-              <SorobanColumn value={currentNumber} />
-            ) : (
-              <div>{/* <EmptySoroban /> */}</div>
-            )}
-          </div>
-        )}
+      {/* Soroban displey */}
+      {gameState === "playing" && (
+        <div className="text-center mb-8">
+          <div className="w-[150px] relative h-[450px] py-2 border-[7px] rounded-2xl border-[#666680]">
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[7px] bg-[#666680] h-full"></div>
+            <div className="absolute top-[132px] left-1/2 transform -translate-x-1/2 w-full h-[7px] bg-[#666680]"></div>
 
-        {/* Input state - for both modes */}
-        {gameState === "input" && (
-          <div className="space-y-6 mt-4">
-            {/* Single mode - show input field */}
-            {settings.mode === "single" && (
-              <div className="space-y-4">
-                <input
-                  type="number"
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Javobingizni kiriting"
-                  className="px-4 py-2 border-2 border-gray-300 rounded-full text-center text-lg focus:outline-none focus:border-blue-500"
-                  autoFocus
-                />
-                <button
-                  onClick={handleAnswerSubmit}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
-                >
-                  Javobni tekshirish
-                </button>
-              </div>
-            )}
-
-            {/* Auditorium mode - show answer button */}
-            {settings.mode === "auditorium" && (
-              <button
-                onClick={showResult}
-                className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+            {displayedSegments.map((visible, index) => (
+              <div
+                key={index}
+                className={`mb-2 ${
+                  index === 1 ? "mb-4" : ""
+                } flex relative z-20 items-center justify-center ${
+                  index < 2 ? "mt-2" : ""
+                }`}
+                style={{ opacity: visible ? 1 : 0 }}
               >
-                Natijani ko'rish
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Result state - after submitting answer */}
-        {gameState === "result" && (
-          <div className="space-y-6 mt-4">
-            <div className="space-y-4">
-              {/* Only show user answer in single mode */}
-              {settings.mode === "single" && (
-                <div className="text-xl text-gray-800">
-                  Sizning javobingiz: {userAnswer || "Kiritilmadi"}
-                </div>
-              )}
-              <div className="text-xl text-gray-800">
-                To'g'ri javob: {correctAnswer}
+                <img src={rectangle} className="h-[50px]" alt="segment" />
               </div>
-              {/* Only show correctness in single mode */}
-              {settings.mode === "single" && (
-                <div
-                  className={`text-lg font-semibold ${
-                    parseInt(userAnswer) === correctAnswer
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {parseInt(userAnswer) === correctAnswer
-                    ? "To'g'ri!"
-                    : "Noto'g'ri!"}
-                </div>
-              )}
-            </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* O'yin boshqaruvi */}
+      {gameState === "input" && (
+        <div className="mt-6 w-full max-w-md px-4">
+          {settings.mode === "auditorium" ? (
             <button
-              onClick={nextSequence}
-              className="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+              onClick={showResult}
+              className="w-full px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition flex items-center justify-center"
             >
-              Keyingi misol
+              Natijani ko'rish <FiChevronRight className="ml-2" />
+            </button>
+          ) : (
+            <div className="flex flex-col items-center">
+              <input
+                ref={inputRef}
+                type="number"
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full px-4 py-3 text-2xl border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+                placeholder="Javobingizni kiriting"
+                autoFocus
+              />
+              <button
+                onClick={handleAnswerSubmit}
+                disabled={userAnswer == "" || isNaN(userAnswer)}
+                className="mt-4 w-full px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+              >
+                Tasdiqlash <FiCheck className="ml-2" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Natijalar */}
+      {gameState === "result" && showAnswer && (
+        <div className="mt-6 w-full max-w-md px-4">
+          <div
+            className={`p-6 rounded-lg bg-gray-200 shadow-md ${
+              settings.mode == "auditorium" && isAnswerCorrect
+                ? "bg-gray-400"
+                : "bg"
+            }`}
+          >
+            {settings.mode === "single" && (
+              <h3 className="text-xl font-bold mb-4 text-center">
+                {isAnswerCorrect ? "✅ To'g'ri!" : "❌ Noto'g'ri"}
+              </h3>
+            )}
+
+            {settings.mode === "single" && (
+              <div className="text-center mb-4">
+                <p className="text-lg">Sizning javobingiz: {userAnswer}</p>
+                <p className="text-2xl font-bold mt-2">
+                  Tog'ri javob: {correctAnswer}
+                </p>
+              </div>
+            )}
+
+            {settings.mode === "auditorium" && (
+              <p className="text-center text-xl font-[500] text-gray-700">
+                To'g'ri javob: {correctAnswer}
+              </p>
+            )}
+
+            <button
+              onClick={generateSequence}
+              className="mt-6 w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Keyingi
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

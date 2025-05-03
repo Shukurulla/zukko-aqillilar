@@ -1,0 +1,12 @@
+export { default as n1 } from "./1.png";
+export { default as n1_1 } from "./1.1.png";
+export { default as n1_2 } from "./1.2.png";
+export { default as n1_3 } from "./1.3.png";
+export { default as n1_4 } from "./1.5.png";
+export { default as n1_5 } from "./1.5.png";
+export { default as n1_6 } from "./1.6.png";
+export { default as n1_7 } from "./1.7.png";
+export { default as n1_8 } from "./1.8.png";
+export { default as n1_9 } from "./1.9.png";
+export { default as n1_10 } from "./1.10.png";
+export { default as n1_11 } from "./1.11.png";

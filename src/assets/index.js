@@ -11,3 +11,7 @@ export { default as Paper } from "./Paper.png";
 export { default as Book } from "./book.png";
 export { default as Download } from "./download.png";
 export { default as playDetail } from "./play-detail.png";
+export { default as rectangle } from "./rectangle.png";
+export { default as game } from "./game.png";
+export { default as teacherLogo } from "./teacher-logo.png";
+export { default as studentLogo } from "./student-logo.png";

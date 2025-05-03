@@ -1,9 +1,12 @@
 import { useState } from "react";
 import FlashAnzanCard from "./flash-anzan-card";
 import FlashAnzanCardComponent from "./flash-anzan-card-game";
+import { useSelector } from "react-redux";
+import Sidebar from "../components/sidebar";
 
 function FlashAnzanCardWrapper() {
   const [gameStarted, setGameStarted] = useState(false);
+  const { user } = useSelector((state) => state.user);
   const [settings, setSettings] = useState({
     mode: "single", // 'single' yoki 'auditorium'
     digitCount: 1, // 1, 2 yoki 3
