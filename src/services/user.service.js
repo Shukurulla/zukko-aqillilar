@@ -51,7 +51,7 @@ const UserService = {
       dispatch(getuserFailure());
     }
   },
-  async profile(dispatch, role) {
+  async profile(dispatch, role, navigate) {
     dispatch(getUserStart());
     try {
       // For login, we can use a single endpoint that handles both types
@@ -61,6 +61,7 @@ const UserService = {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Xatolik yuz berdi");
+      navigate("/auth/login");
       dispatch(getuserFailure());
     }
   },
