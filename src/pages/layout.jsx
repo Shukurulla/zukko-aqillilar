@@ -44,7 +44,7 @@ const Layout = ({ activePage, page }) => {
       </div>
 
       {/* Main Content */}
-      <div className="col-lg-11 col-md-8 col-sm-12 h-[calc(100vh-64px)] lg:h-full overflow-y-auto">
+      <div className="col-lg-11 col-md-8 col-sm-12 h-[calc(100vh-64px)] lg:h-full overflow-y-auto pr-14">
         {activePage}
       </div>
     </div>

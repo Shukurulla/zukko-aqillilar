@@ -105,6 +105,10 @@ const Sidebar = ({ active, onClose }) => {
                   role == "teacher" && item.title == "Memory Game"
                     ? "hidden"
                     : ""
+                }  ${
+                  role == "student" && item.title == "Materiallar"
+                    ? "hidden"
+                    : ""
                 } items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
                 ${
                   active === item.title
