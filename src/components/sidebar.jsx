@@ -11,18 +11,18 @@ import {
 } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { FiX, FiHome, FiLogOut } from "react-icons/fi";
-const role = localStorage.getItem("role");
+
 const menuItems = [
   {
     title: "Video Darslar",
     path: "/dashboard",
     icon: VideoHeaderIcon,
   },
-
   {
     title: "Materiallar",
     icon: Note,
     path: "/dashboard/materials",
+    role: "teacher", // Explicitly mark this item as teacher-only
   },
   {
     title: "Flash Kartalar",
@@ -38,12 +38,14 @@ const menuItems = [
     title: "Memory Game",
     icon: game,
     path: "/dashboard/memory-game",
+    role: "student", // Explicitly mark this item as student-only
   },
 ];
 
 const Sidebar = ({ active, onClose }) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const role = localStorage.getItem("role"); // Get role inside component
 
   const handleLogout = () => {
     localStorage.removeItem("flash-jwt");
@@ -78,12 +80,12 @@ const Sidebar = ({ active, onClose }) => {
         </div>
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar csapat */}
       <aside className="w-full lg:w-auto min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
             <img
-              src={role == "student" ? studentLogo : teacherLogo}
+              src={role === "student" ? studentLogo : teacherLogo}
               alt="logo"
               className="w-[180px] lg:w-[180px]"
             />
@@ -94,45 +96,43 @@ const Sidebar = ({ active, onClose }) => {
 
           {/* Menu items */}
           <nav className="flex flex-col gap-2">
-            {menuItems.map((item) => (
-              <button
-                key={item.title}
-                onClick={() => {
-                  navigate(item.path);
-                  onClose();
-                }}
-                className={`flex ${
-                  role == "teacher" && item.title == "Memory Game"
-                    ? "hidden"
-                    : ""
-                }  ${
-                  role == "student" && item.title == "Materiallar"
-                    ? "hidden"
-                    : ""
-                } items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
-                ${
-                  active === item.title
-                    ? "bg-gray-100 text-[#1D2B53]"
-                    : "text-gray-500 hover:bg-gray-50"
-                }`}
-              >
-                <img
-                  src={item.icon}
-                  alt={item.title}
-                  className="w-5 h-5 object-contain"
-                />
-                <span>{item.title}</span>
-              </button>
-            ))}
+            {menuItems.map((item) => {
+              // Skip rendering if item is restricted to a specific role and doesn't match current role
+              if (item.role && item.role !== role) {
+                return null;
+              }
+              return (
+                <button
+                  key={item.title}
+                  onClick={() => {
+                    navigate(item.path);
+                    onClose();
+                  }}
+                  className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
+                    ${
+                      active === item.title
+                        ? "bg-gray-100 text-[#1D2B53]"
+                        : "text-gray-500 hover:bg-gray-50"
+                    }`}
+                >
+                  <img
+                    src={item.icon}
+                    alt={item.title}
+                    className="w-5 h-5 object-contain"
+                  />
+                  <span>{item.title}</span>
+                </button>
+              );
+            })}
           </nav>
         </div>
-        {/* Logo and Close Button */}
+        {/* Logout Button */}
         <button
           onClick={() => setShowLogoutModal(true)}
           className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
                 text-gray-500 hover:bg-gray-100 hover:text-gray-800 mt-auto`}
         >
-          <FiLogOut size={18} color="" />
+          <FiLogOut size={18} />
           <span>Chiqish</span>
         </button>
       </aside>
