@@ -16,7 +16,9 @@ const Layout = ({ activePage, page }) => {
     if (!token) {
       navigate("/auth/login");
     }
-    UserService.profile(dispatch, role);
+    if (token) {
+      UserService.profile(dispatch, role, navigate);
+    }
   }, [activePage, page]);
 
   return (

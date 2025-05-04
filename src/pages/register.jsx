@@ -59,11 +59,14 @@ const Register = () => {
 
   const handleRoleSelect = (role) => {
     setUserType(role);
-    setCurrentStep("form");
   };
 
   const handleBack = () => {
     setCurrentStep("role");
+  };
+
+  const nextForm = (role) => {
+    setCurrentStep("form");
   };
 
   // Role Selection Page
@@ -100,6 +103,16 @@ const Register = () => {
                 onClick={() => handleRoleSelect("teacher")}
               >
                 O'qituvchi sifatida ro'yxatdan o'tish
+              </button>
+
+              <button
+                disabled={userType == null}
+                onClick={() => nextForm()}
+                className={`w-full  bg-blue-600 text-white text-lg font-semibold py-2 rounded-full hover:bg-blue-700 transition ${
+                  userType == null ? "opacity-[0.4]" : "opacity-1"
+                }`}
+              >
+                Tasdiqlash
               </button>
             </div>
 
