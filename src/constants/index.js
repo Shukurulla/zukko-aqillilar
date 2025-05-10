@@ -266,4 +266,14 @@ export const materials = [
     link: "https://kepket.uz/media/ssenariy mnemonika.pptx",
     type: "pptx",
   },
+  {
+    title: "ssenariy mnemonika",
+    link: "https://kepket.uz/media/files/ssenariy mnemonika2.pptx",
+    type: "pptx",
+  },
+  {
+    title: "ssenariy abakus",
+    link: "https://kepket.uz/media/files/ssenariy abakus.pptx",
+    type: "pptx",
+  },
 ];
