@@ -34,3 +34,7 @@ aside {
   flex-direction: column;
   justify-content: space-between;
 }
+.certificat {
+  background-image: url(../public/sertificat/certificat.png);
+  background-size: cover;
+}

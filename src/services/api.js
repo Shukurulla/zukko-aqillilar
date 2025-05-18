@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://zukko-server.vercel.app/";
+axios.defaults.baseURL = "http://localhost:7777";
 axios.interceptors.request.use((option) => {
   const token = localStorage.getItem("flash-jwt")
     ? localStorage.getItem("flash-jwt")

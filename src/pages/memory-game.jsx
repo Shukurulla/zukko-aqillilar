@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Adjust the import path as needed
+import React, { useState, useEffect, useRef } from "react";
 import { similarImageOfNumber } from "../constants";
 
 const MemoryGame = () => {
@@ -19,6 +19,57 @@ const MemoryGame = () => {
   const [attempts, setAttempts] = useState(0);
   const [incorrectAttempts, setIncorrectAttempts] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const preloadedImages = useRef(new Map());
+
+  // Preload images when component mounts
+  useEffect(() => {
+    let totalImages = 0;
+    let loadedCount = 0;
+
+    // Count total images to be loaded
+    uniqueSimilarImages.slice(0, 8).forEach((numObj) => {
+      totalImages += 1; // One representative image per number
+    });
+
+    // Function to update loading progress
+    const updateProgress = () => {
+      loadedCount++;
+      const progress = Math.floor((loadedCount / totalImages) * 100);
+      setLoadingProgress(progress);
+      if (loadedCount === totalImages) {
+        setImagesLoaded(true);
+      }
+    };
+
+    // Preload all images
+    uniqueSimilarImages.slice(0, 8).forEach((numObj) => {
+      const representativeImage = numObj.similarImages[0];
+      if (representativeImage) {
+        const img = new Image();
+        img.onload = updateProgress;
+        img.onerror = updateProgress; // Still proceed if an image fails to load
+        img.src = representativeImage;
+        preloadedImages.current.set(numObj.number, representativeImage);
+      } else {
+        // If no image, still update progress
+        updateProgress();
+      }
+    });
+
+    // If there are no images to load, mark as loaded
+    if (totalImages === 0) {
+      setImagesLoaded(true);
+    }
+  }, []);
+
+  // Initialize the game after images are loaded
+  useEffect(() => {
+    if (imagesLoaded) {
+      initializeGame();
+    }
+  }, [imagesLoaded]);
 
   // Initialize the game
   const initializeGame = () => {
@@ -28,7 +79,9 @@ const MemoryGame = () => {
     // Create pairs: one card with the number, one with its first image
     const gameCards = [];
     selectedNumbers.forEach((numObj, index) => {
-      const representativeImage = numObj.similarImages[0]; // Use the first image as the representative
+      // Get the preloaded image for this number
+      const representativeImage = preloadedImages.current.get(numObj.number);
+
       gameCards.push({
         id: `card-${index}-num`,
         number: numObj.number,
@@ -70,7 +123,9 @@ const MemoryGame = () => {
     setFlippedCards([...flippedCards, card]);
 
     // Increment attempts
-    setAttempts(attempts + 1);
+    if (flippedCards.length === 0) {
+      setAttempts(attempts + 1);
+    }
 
     // Check for match if two cards are flipped
     if (flippedCards.length === 1) {
@@ -104,10 +159,26 @@ const MemoryGame = () => {
     initializeGame();
   };
 
-  // Start the game on component mount
-  useEffect(() => {
-    initializeGame();
-  }, []);
+  // Loading screen
+  if (!imagesLoaded) {
+    return (
+      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-[50vh]">
+        <h1 className="text-2xl font-bold mb-6">Memory Game</h1>
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 text-center">
+          <h2 className="text-xl font-semibold mb-4">O'yin yuklanmoqda...</h2>
+          <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+            <div
+              className="bg-blue-600 h-4 rounded-full transition-all duration-300"
+              style={{ width: `${loadingProgress}%` }}
+            ></div>
+          </div>
+          <p className="text-gray-600">
+            Barcha tasvirlar yuklanmoqda: {loadingProgress}%
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4 flex flex-col items-center">

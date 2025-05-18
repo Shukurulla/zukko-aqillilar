@@ -10,6 +10,7 @@ import Materials from "./pages/materials";
 import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/dashboard";
 import MemoryGame from "./pages/memory-game";
+import Certificate from "./pages/sertificat";
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
               page={"Flash Kartalar"}
             />
           }
+        />
+        <Route
+          path="/dashboard/certificate"
+          element={<Layout activePage={<Certificate />} page={"Sertifikat"} />}
         />
       </Routes>
     </>

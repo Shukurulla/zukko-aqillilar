@@ -36,7 +36,7 @@ const UserService = {
     try {
       // For login, we can use a single endpoint that handles both types
       const { data } = await axios.post("/api/user/login", userData);
-
+      console.log(data);
       if (data.data.token) {
         localStorage.setItem("flash-jwt", data.data.token);
         localStorage.setItem("role", data.data.user.role);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Computing,
   game,
@@ -10,48 +10,72 @@ import {
   VideoHeaderIcon,
 } from "../assets";
 import { useNavigate } from "react-router-dom";
-import { FiX, FiHome, FiLogOut } from "react-icons/fi";
-
-const menuItems = [
-  {
-    title: "Video Darslar",
-    path: "/dashboard",
-    icon: VideoHeaderIcon,
-  },
-  {
-    title: "Materiallar",
-    icon: Note,
-    path: "/dashboard/materials",
-    role: "teacher", // Explicitly mark this item as teacher-only
-  },
-  {
-    title: "Flash Kartalar",
-    icon: MoreSquare,
-    path: "/dashboard/flash-card",
-  },
-  {
-    title: "Flash Anzan",
-    icon: Computing,
-    path: "/dashboard/flash-anzan",
-  },
-  {
-    title: "Memory Game",
-    icon: game,
-    path: "/dashboard/memory-game",
-    role: "student", // Explicitly mark this item as student-only
-  },
-];
+import { FiX, FiHome, FiLogOut, FiAward } from "react-icons/fi";
 
 const Sidebar = ({ active, onClose }) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const role = localStorage.getItem("role"); // Get role inside component
+  const [role, setRole] = useState(""); // Initialize with empty string
+
+  // Get role when component mounts
+  useEffect(() => {
+    const userRole = localStorage.getItem("role");
+    if (userRole) {
+      setRole(userRole);
+    }
+  }, []);
+
+  // Define menu items with roles
+  const menuItems = [
+    {
+      title: "Video Darslar",
+      path: "/dashboard",
+      icon: VideoHeaderIcon,
+      roles: ["student", "teacher"], // Available for both roles
+    },
+    {
+      title: "Materiallar",
+      icon: Note,
+      path: "/dashboard/materials",
+      roles: ["teacher"], // Only for teachers
+    },
+    {
+      title: "Flash Kartalar",
+      icon: MoreSquare,
+      path: "/dashboard/flash-card",
+      roles: ["student", "teacher"], // Available for both roles
+    },
+    {
+      title: "Flash Anzan",
+      icon: Computing,
+      path: "/dashboard/flash-anzan",
+      roles: ["student", "teacher"], // Available for both roles
+    },
+    {
+      title: "Memory Game",
+      icon: game,
+      path: "/dashboard/memory-game",
+      roles: ["student"], // Only for students
+    },
+    {
+      title: "Sertifikat",
+      icon: FiAward,
+      path: "/dashboard/certificate",
+      roles: ["student"], // Only for students
+    },
+  ];
 
   const handleLogout = () => {
     localStorage.removeItem("flash-jwt");
+    localStorage.removeItem("role");
     navigate("/");
     onClose();
   };
+
+  // Filter menu items based on the user's role
+  const filteredMenuItems = menuItems.filter((item) =>
+    item.roles.includes(role)
+  );
 
   return (
     <>
@@ -80,7 +104,7 @@ const Sidebar = ({ active, onClose }) => {
         </div>
       )}
 
-      {/* Sidebar csapat */}
+      {/* Sidebar component */}
       <aside className="w-full lg:w-auto min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
@@ -94,36 +118,34 @@ const Sidebar = ({ active, onClose }) => {
             </button>
           </div>
 
-          {/* Menu items */}
+          {/* Menu items - filtered based on role */}
           <nav className="flex flex-col gap-2">
-            {menuItems.map((item) => {
-              // Skip rendering if item is restricted to a specific role and doesn't match current role
-              if (item.role && item.role !== role) {
-                return null;
-              }
-              return (
-                <button
-                  key={item.title}
-                  onClick={() => {
-                    navigate(item.path);
-                    onClose();
-                  }}
-                  className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
-                    ${
-                      active === item.title
-                        ? "bg-gray-100 text-[#1D2B53]"
-                        : "text-gray-500 hover:bg-gray-50"
-                    }`}
-                >
+            {filteredMenuItems.map((item) => (
+              <button
+                key={item.title}
+                onClick={() => {
+                  navigate(item.path);
+                  onClose();
+                }}
+                className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
+                  ${
+                    active === item.title
+                      ? "bg-gray-100 text-[#1D2B53]"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+              >
+                {typeof item.icon === "string" ? (
                   <img
                     src={item.icon}
                     alt={item.title}
                     className="w-5 h-5 object-contain"
                   />
-                  <span>{item.title}</span>
-                </button>
-              );
-            })}
+                ) : (
+                  <item.icon className="w-5 h-5" />
+                )}
+                <span>{item.title}</span>
+              </button>
+            ))}
           </nav>
         </div>
         {/* Logout Button */}
