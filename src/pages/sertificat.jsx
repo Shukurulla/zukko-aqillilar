@@ -17,40 +17,101 @@ const Certificate = () => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    const fetchCertificate = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.get("/api/certificate");
-        setCertificate(data);
-
-        // If certificate was just generated, show a success message
-        if (data.data?.available && data.data?.justGenerated) {
-          setTimeout(() => {
-            alert("Sertifikat muvaffaqiyatli tayyorlandi!");
-          }, 500);
-        }
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching certificate:", error);
-        setError(
-          error.response?.data?.message ||
-            "Sertifikatni yuklashda xatolik yuz berdi"
-        );
-        setLoading(false);
-      }
-    };
-
-    fetchCertificate();
+    // Initial check for certificate status
+    checkCertificateStatus();
   }, []);
 
-  const handleDownload = () => {
-    if (!certificate?.data?.downloadUrl) return;
-
-    window.open(certificate.data.downloadUrl, "_blank");
+  const checkCertificateStatus = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/api/certificate");
+      setCertificate(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching certificate:", error);
+      setError(
+        error.response?.data?.message ||
+          "Sertifikatni yuklashda xatolik yuz berdi"
+      );
+      setLoading(false);
+    }
   };
 
-  const togglePreview = () => {
+  const generateCertificate = async () => {
+    try {
+      setIsGenerating(true);
+      const { data } = await axios.post(
+        "/api/certificate/generate-certificate"
+      );
+
+      // Update certificate data with the newly generated certificate
+      setCertificate({
+        status: "success",
+        message: "Sertifikat muvaffaqiyatli yaratildi",
+        data: {
+          available: true,
+          studentName: certificate.data.studentName,
+          issueDate: new Date().toISOString().split("T")[0],
+          certificateId:
+            certificate.data.certificateId || `CERT-${Date.now().toString(36)}`,
+          downloadUrl: data.certificateUrl,
+          previewUrl: data.certificateUrl,
+          justGenerated: true,
+        },
+      });
+
+      setIsGenerating(false);
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      setError(
+        error.response?.data?.message ||
+          "Sertifikatni yaratishda xatolik yuz berdi"
+      );
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      setIsGenerating(true);
+      const { data } = await axios.post(
+        "/api/certificate/generate-certificate"
+      );
+
+      // Update certificate data with the newly generated certificate
+      setCertificate({
+        status: "success",
+        message: "Sertifikat muvaffaqiyatli yaratildi",
+        data: {
+          available: true,
+          studentName: certificate.data.studentName,
+          issueDate: new Date().toISOString().split("T")[0],
+          certificateId:
+            certificate.data.certificateId || `CERT-${Date.now().toString(36)}`,
+          downloadUrl: data.certificateUrl,
+          previewUrl: data.certificateUrl,
+          justGenerated: true,
+        },
+      });
+
+      window.open(data.certificateUrl, "_blank");
+      setIsGenerating(false);
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      setError(
+        error.response?.data?.message ||
+          "Sertifikatni yaratishda xatolik yuz berdi"
+      );
+      setIsGenerating(false);
+    }
+  };
+
+  const togglePreview = async () => {
+    // If no preview URL, generate the certificate first
+    if (!certificate?.data?.previewUrl && !isPreviewOpen) {
+      await generateCertificate();
+    }
+
     setIsPreviewOpen(!isPreviewOpen);
   };
 
@@ -92,7 +153,7 @@ const Certificate = () => {
     );
   }
 
-  // If certificate is available
+  // If certificate is available or can be generated
   if (certificate.data?.available) {
     return (
       <div className="container mx-auto p-4">
@@ -120,15 +181,33 @@ const Certificate = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleDownload}
+                  disabled={isGenerating}
                   className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                 >
-                  <FiDownload /> Yuklab olish
+                  {isGenerating ? (
+                    <>
+                      <FiLoader className="animate-spin" /> Yuklanmoqda...
+                    </>
+                  ) : (
+                    <>
+                      <FiDownload /> Yuklab olish
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={togglePreview}
+                  disabled={isGenerating}
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
                 >
-                  <FiEye /> Ko'rish
+                  {isGenerating ? (
+                    <>
+                      <FiLoader className="animate-spin" /> Tayyorlanmoqda...
+                    </>
+                  ) : (
+                    <>
+                      <FiEye /> Ko'rish
+                    </>
+                  )}
                 </button>
               </div>
             </div>
@@ -149,7 +228,7 @@ const Certificate = () => {
         )}
 
         {/* Preview Modal */}
-        {isPreviewOpen && (
+        {isPreviewOpen && certificate.data.previewUrl && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] flex flex-col">
               <div className="flex justify-between items-center p-4 border-b">
