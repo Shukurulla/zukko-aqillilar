@@ -36,7 +36,7 @@ const Materials = () => {
   return (
     <div className="row h-[100vh] container py-5">
       {materials.map((item, index) => (
-        <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
+        <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
           <div className="p-4 px-3 sm:p-4 bg-white rounded-lg shadow-md">
             <div className="image flex items-center justify-center m-auto w-32 h-32 sm:w-40 sm:h-40">
               <FiFile size={100} color="#255ED6" />
