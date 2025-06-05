@@ -55,9 +55,13 @@ const Videos = () => {
         toast.success("Dars muvaffaqiyatli yakunlandi!");
         navigate(`/dashboard/videos/${videos[currentIndex + 1].id}`, {
           replace: true,
-        });
-      }
 
+        });
+        
+      }
+      setTimeout(() => {
+        window.location.reload()
+      }, 100)
       setCompletingVideo(false);
     } catch (error) {
       console.error("Error completing lesson:", error);
