@@ -11,12 +11,16 @@ const Hero = () => {
         {/* Text Content - Mobile first (top), Desktop (left) */}
         <div className="text-side w-full lg:w-[50%] order-1 lg:order-2 md:text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-tight md:leading-[60px]">
-            <span className="text-[#255ED6]">Mental arifmetikani</span> onlayn
-            <br className="hidden sm:block" /> o'rganishda o'ziga xos yondashuv
+            <span className="text-[#255ED6]">
+              Aqlni charxlaydigan platformaga xush kelibsiz!
+            </span>
           </h1>
           <p className="text-[#666680] my-4 md:my-5 text-base md:text-lg lg:text-[20px]">
-            Mobil qurilmalar va ish stollarida, foydalanish orqali o'z
-            tezligingiz bilan o'rganing va o'rgating
+            Fikrlash Akademiyasi – bu nafaqat o‘rgatadigan, balki
+            ilhomlantiradigan makon. Chunki mantiqiy fikrlashni o‘rgatish — bu
+            ham san’at, ham fan. Ushbu platforma sizga ushbu san’atni ilmiy
+            yondashuvlar, metodik vositalar va innovatsion mashqlar orqali
+            egallash imkonini beradi
           </p>
           <div className="flex justify-start lg:justify-start">
             <button

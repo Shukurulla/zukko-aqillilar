@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Computing,
-  Logo,
   MoreSquare,
   Note,
   PasswordCheck,
@@ -11,6 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { PrimaryButton } from "./button";
 import { FiMenu, FiX } from "react-icons/fi";
+import Logo from "./logo";
 
 const navItems = [
   {
@@ -73,8 +73,8 @@ const Header = () => {
       <nav className="py-3 px-4 md:py-4 md:px-6 lg:container lg:mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="logo flex items-center">
-          <Link to="/" className="focus:outline-none">
-            <img src={Logo} alt="Logo" className="h-8 md:h-10 w-auto" />
+          <Link to="/" className="focus:outline-none flex gap-1 items-center">
+            <Logo />
           </Link>
         </div>
 

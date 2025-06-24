@@ -7,7 +7,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { cards } from "../constants";
-import { Book, Download, Logo, playDetail } from "../assets";
 import { PrimaryButton } from "../components/button";
 import MaterialsSlider from "../components/slider-section";
 import { commentUser } from "../../public/images";
@@ -15,7 +14,8 @@ import VideoReviewsSlider from "../components/comments";
 import FAQSection from "../components/faq";
 import { Link } from "react-router-dom";
 import { FiFacebook, FiInstagram, FiPhoneCall } from "react-icons/fi";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import Logo from "../components/logo";
 
 const LandingPage = () => {
   return (
@@ -52,13 +52,11 @@ const LandingPage = () => {
           </div>
         </section>
 
-        <MaterialsSlider />
+        {/* <MaterialsSlider /> */}
 
         <section id="comments" className="container px-4 py-12 md:py-20">
           <VideoReviewsSlider />
         </section>
-
-        <FAQSection />
 
         {/* Footer */}
         <footer className="container px-4 py-12 md:py-20">
@@ -66,9 +64,10 @@ const LandingPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Column 1 */}
               <div>
-                <img src={Logo} alt="Logo" className="h-10 md:h-12" />
+                <Logo />
                 <p className="text-[#666680] mt-4 text-sm md:text-base">
-                  154, Islam Karimov, Nukus, <br /> Qoraqolpog'iston, Uzbekiston
+                  78/112, A.Dosnazarov, Nukus, <br /> Qoraqalpog'iston,
+                  O'zbekiston
                 </p>
               </div>
 
@@ -117,26 +116,21 @@ const LandingPage = () => {
                   <li>
                     <Link className="text-[#666680] hover:text-blue-600 flex items-center gap-3 text-base md:text-lg">
                       <div className="icon w-10 h-10 rounded-full border border-[#E8E8F6] flex items-center justify-center">
-                        <FaFacebook className="text-blue-600" />
+                        <FaGoogle className="text-blue-600" />
                       </div>
-                      <span>@imax_designer</span>
+                      <span>kalekeevast@gmail.com</span>
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-[#666680] hover:text-blue-600 flex items-center gap-3 text-base md:text-lg">
+                    <a
+                      href="tel:+998972203088"
+                      className="text-[#666680] hover:text-blue-600 flex items-center gap-3 text-base md:text-lg"
+                    >
                       <div className="icon w-10 h-10 rounded-full border border-[#E8E8F6] flex items-center justify-center">
                         <FiPhoneCall className="text-blue-600" />
                       </div>
-                      <span>+99890 123 45 67</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-[#666680] hover:text-blue-600 flex items-center gap-3 text-base md:text-lg">
-                      <div className="icon w-10 h-10 rounded-full border border-[#E8E8F6] flex items-center justify-center">
-                        <FiInstagram className="text-pink-600" />
-                      </div>
-                      <span>@imax_designer</span>
-                    </Link>
+                      <span>+998972203088</span>
+                    </a>
                   </li>
                 </ul>
               </div>

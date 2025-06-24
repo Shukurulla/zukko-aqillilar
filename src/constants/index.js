@@ -57,18 +57,18 @@ import { Paper, Play, Send } from "../assets";
 export const cards = [
   {
     icon: Play,
-    title: "Video kurslari",
-    text: "Mental arifmetika haqida to'liq tushunchaga ega bo'lgan yuqori sifatli va tushunarli videolar",
+    title: "Didaktik videolar",
+    text: "Boshlang‘ich ta’limda mantiqiy fikrlashni rivojlantirishga oid metodik yondashuvlar, dars namunalarini ko‘rsatuvchi amaliy video qo‘llanmalar.",
   },
   {
     icon: Send,
-    title: "Tez javoblar",
-    text: "O'qituvchilarimiz sizga imkon qadartezroq javob berishadi va sizga yordam berishdan xursand bo'lishadi",
+    title: "Tez va asosli javoblar",
+    text: "Sizga yordam beradigan muallif, ilmiy rahbar va tajribali mutaxassislar tomonidan taqdim etilgan maslahatlar.",
   },
   {
     icon: Paper,
-    title: "Interaktiv kartalar",
-    text: "Interaktiv kartalar va Flash Anzan kabi innovatsion echimlarimiz bilan siz aqliy arifmetikani tezda o'rganib olasiz",
+    title: "Didaktik vositalar to‘plami",
+    text: "Boshlang‘ich sinf uchun moslab ishlab chiqilgan o‘yinlar, vizual topshiriqlar, fikrlash kartalari va mashqlar to‘plami.",
   },
 ];
 

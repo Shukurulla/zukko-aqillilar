@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Computing,
   game,
-  Logo,
   MoreSquare,
   Note,
   studentLogo,
@@ -11,6 +10,7 @@ import {
 } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { FiX, FiHome, FiLogOut, FiAward } from "react-icons/fi";
+import Logo from "./logo";
 
 const Sidebar = ({ active, onClose }) => {
   const navigate = useNavigate();
@@ -43,13 +43,13 @@ const Sidebar = ({ active, onClose }) => {
       title: "Flash Kartalar",
       icon: MoreSquare,
       path: "/dashboard/flash-card",
-      roles: ["student", "teacher"], // Available for both roles
+      roles: ["student"], // Available for both roles
     },
     {
       title: "Flash Anzan",
       icon: Computing,
       path: "/dashboard/flash-anzan",
-      roles: ["student", "teacher"], // Available for both roles
+      roles: ["student"], // Available for both roles
     },
     {
       title: "Memory Game",
@@ -105,14 +105,10 @@ const Sidebar = ({ active, onClose }) => {
       )}
 
       {/* Sidebar component */}
-      <aside className="w-full lg:w-auto min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
+      <aside className="w-full  min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
-            <img
-              src={role === "student" ? studentLogo : teacherLogo}
-              alt="logo"
-              className="w-[180px] lg:w-[180px]"
-            />
+            <Logo />
             <button onClick={onClose} className="lg:hidden text-gray-600">
               <FiX size={24} />
             </button>

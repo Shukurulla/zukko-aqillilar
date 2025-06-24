@@ -15,3 +15,4 @@ export { default as rectangle } from "./rectangle.png";
 export { default as game } from "./game.png";
 export { default as teacherLogo } from "./teacher-logo.png";
 export { default as studentLogo } from "./student-logo.png";
+export { default as logo } from "./newLogo.png";

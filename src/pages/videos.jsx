@@ -55,13 +55,11 @@ const Videos = () => {
         toast.success("Dars muvaffaqiyatli yakunlandi!");
         navigate(`/dashboard/videos/${videos[currentIndex + 1].id}`, {
           replace: true,
-
         });
-        
       }
       setTimeout(() => {
-        window.location.reload()
-      }, 100)
+        window.location.reload();
+      }, 100);
       setCompletingVideo(false);
     } catch (error) {
       console.error("Error completing lesson:", error);
@@ -140,7 +138,9 @@ const Videos = () => {
           )}
         </div>
         <p className="text-gray-600 text-sm mb-2">
-          {currentVideo?.description}
+          {currentVideo?.description.split("\n").map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
         </p>
         <div className="flex justify-end mt-auto">
           {isLastVideo ? (

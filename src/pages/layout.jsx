@@ -38,7 +38,7 @@ const Layout = ({ activePage, page }) => {
       <div
         className={`${
           isSidebarOpen ? "block" : "hidden"
-        } lg:block col-lg-1 col-md-4 col-sm-12 m-0 p-0 h-auto lg:h-full overflow-y-auto bg-white z-10 absolute lg:static w-full lg:w-auto transition-all duration-300`}
+        } lg:block col-lg-2 col-md-4 col-sm-12  m-0 p-0 h-auto lg:h-full overflow-y-auto bg-white z-10 absolute lg:static  transition-all duration-300`}
       >
         <Sidebar active={page} onClose={() => setIsSidebarOpen(false)} />
       </div>

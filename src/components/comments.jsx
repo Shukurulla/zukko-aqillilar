@@ -11,7 +11,7 @@ const VideoReviewsSlider = () => {
       name: "Dauletmuratov Axmetbek",
       location: "Nukus shahri, Qoraqolpog'iston Respublikasi",
       comment:
-        "Men 'Zukko Aqillilar'siz mental arifmetikani o'rganishda bunday yutuqlarga erishmagan bo'lardim...",
+        "Men 'FIKRLASH AKADEMIYASI'siz mental arifmetikani o'rganishda bunday yutuqlarga erishmagan bo'lardim...",
       image: commentUser,
     },
     {
@@ -53,18 +53,18 @@ const VideoReviewsSlider = () => {
           Video sharhlar
         </h3>
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mt-2">
-          Xaridorlarimiz biz haqimizda nima deydilar
+          Foydalanuvchilar biz haqimizda nima deydilar
         </h1>
       </div>
 
       <div className="relative">
         <div className="flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Image Section */}
-          <div className="w-full md:w-1/2 aspect-video md:aspect-auto relative">
+          <div className="w-[50%] md:w-1/2  aspect-video md:aspect-auto relative">
             <img
               src={reviewsData[currentSlide].image}
               alt={reviewsData[currentSlide].name}
-              className="w-full h-full object-cover"
+              className="w-[70%] mx-auto h-full object-cover"
             />
             <div className="absolute inset-0 bg-[#255dd694] flex items-center justify-center">
               <button className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full bg-white hover:scale-110 transition-transform">
