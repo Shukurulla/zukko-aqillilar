@@ -153,25 +153,17 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
       {/* Flash Card Display */}
       {gameState === "playing" && (
         <div className="text-center mb-8">
-          {currentCard ? (
-            <div className="flex flex-col items-center">
-              <img
-                src={currentCard.imagePath}
-                alt={`Flash card ${currentCard.number}`}
-                className="w-64 h-64 object-contain border-2 border-gray-200 rounded-lg shadow-lg"
-              />
-              {/* Debug info - ishlab chiqishda yoqish mumkin */}
-              {/* <p className="text-xs text-gray-400 mt-2">
+          <div className="flex flex-col items-center">
+            <img
+              src={currentCard.imagePath}
+              alt={`Flash card ${currentCard.number}`}
+              className="w-64 h-64 object-contain border-2 border-gray-200 rounded-lg shadow-lg"
+            />
+            {/* Debug info - ishlab chiqishda yoqish mumkin */}
+            {/* <p className="text-xs text-gray-400 mt-2">
                 Karta #{currentIndex + 1} - Son: {currentCard.number}
               </p> */}
-            </div>
-          ) : (
-            <div className="w-64 h-64 bg-gray-100 border-2 border-gray-200 rounded-lg flex items-center justify-center">
-              <div className="animate-pulse">
-                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
-          )}
+          </div>
 
           {/* Progress indicator */}
           <div className="mt-4">
