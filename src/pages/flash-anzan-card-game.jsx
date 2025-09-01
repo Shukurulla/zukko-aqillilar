@@ -159,11 +159,6 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
                 src={currentCard.imagePath}
                 alt={`Flash card ${currentCard.number}`}
                 className="w-64 h-64 object-contain border-2 border-gray-200 rounded-lg shadow-lg"
-                loading="eager"
-                style={{
-                  imageRendering: "crisp-edges",
-                  WebkitImageRendering: "crisp-edges",
-                }}
               />
               {/* Debug info - ishlab chiqishda yoqish mumkin */}
               {/* <p className="text-xs text-gray-400 mt-2">
