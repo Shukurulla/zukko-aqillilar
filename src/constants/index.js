@@ -239,41 +239,83 @@ export const similarImageOfNumber = [
     similarImages: [n81],
   },
 ];
-
 export const materials = [
   {
     title: "6 g'a 9 kartochkalar",
-    link: "https://kepket.uz/media/6 g'a 9 kartochkalar.pdf",
+    link: "https://vpsserver.kerek.uz/files/6_g'a_9_kartochkalar.pdf",
     type: "pdf",
   },
   {
     title: "A4 lipuchklı oyın",
-    link: "https://kepket.uz/media/A4 lipuchklı oyın.pdf",
+    link: "https://vpsserver.kerek.uz/files/A4_lipuchklı_oyın.pdf",
     type: "pdf",
   },
   {
-    title: "markerli oyin 2",
-    link: "https://kepket.uz/media/markerli oyin 2.pdf",
+    title: "Markerli oyin",
+    link: "https://vpsserver.kerek.uz/files/markerli_oyin.pdf",
     type: "pdf",
   },
   {
-    title: "markerli oyin",
-    link: "https://kepket.uz/media/markerli oyin.pdf",
+    title: "Markerli oyin 2",
+    link: "https://vpsserver.kerek.uz/files/markerli_oyin_2.pdf",
     type: "pdf",
   },
   {
-    title: "ssenariy mnemonika",
-    link: "https://kepket.uz/media/ssenariy mnemonika.pptx",
+    title: "Mentalniy saytu shin",
+    link: "https://vpsserver.kerek.uz/files/mentalniy_sayt_ushin.docx",
+    type: "docx",
+  },
+  {
+    title: "Sonlarni aralash usulda qo'shish va ayirish uchun misollar",
+    link: "https://vpsserver.kerek.uz/files/Sonlarni_aralash_usulda_qo'shish_va_ayirish_uchun_misollar.pdf",
+    type: "pdf",
+  },
+  {
+    title: "Sonlarni aralash usulda qo'shish va ayirishni o'rgatish metodikasi",
+    link: "https://vpsserver.kerek.uz/files/Sonlarni_aralash_usulda_qo'shish_va_ayirishni_o'rgatish_metodikasi.pdf",
+    type: "pdf",
+  },
+  {
+    title: "Sonlarni oddiy usulda qo'shish va ayirish uchun misollar",
+    link: "https://vpsserver.kerek.uz/files/Sonlarni_oddiy_usulda_qo'shish_va_ayirish_uchun_misollar.pdf",
+    type: "pdf",
+  },
+
+  {
+    title: "Sonlarni oddiy usulda qo'shish va ayirishni o'rgatish metodikasi",
+    link: "https://vpsserver.kerek.uz/files/Sonlarni_oddiy_usulda_qo'shish_va_ayirish_uchun_misollar.pdf",
+    type: "pdf",
+  },
+  {
+    title: "Ssenariy abakus",
+    link: "https://vpsserver.kerek.uz/files/ssenariy_abakus.pptx",
     type: "pptx",
   },
   {
-    title: "ssenariy mnemonika",
-    link: "https://kepket.uz/media/files/ssenariy mnemonika2.pptx",
+    title: "Ssenariy mnemonika",
+    link: "https://vpsserver.kerek.uz/files/ssenariy_mnemonika.pptx",
     type: "pptx",
   },
   {
-    title: "ssenariy abakus",
-    link: "https://kepket.uz/media/files/ssenariy abakus.pptx",
-    type: "pptx",
+    title: "Yordamchi 10 donachasi usulida qo'shish va ayirish uchun misollar",
+    link: "https://vpsserver.kerek.uz/files/Yordamchi_10_donachasi_usulida_qo'shish_va_ayirish_uchun_misollar.pdf",
+    type: "pdf",
+  },
+  {
+    title:
+      "Yordamchi 10 donachasi usulida qo'shish va ayirishni o'rgatish metodikasi",
+    link: "https://vpsserver.kerek.uz/files/Yordamchi_10_donachasi_usulida_qo'shish_va_ayirishni_o'rgatish_metodikasi.pdf",
+    type: "pdf",
+  },
+  {
+    title:
+      "Yordamchi 5 donachasi metodika qo'shish va ayirishni o'rgatish metodikasi",
+    link: "https://vpsserver.kerek.uz/files/Yordamchi_5_donachasi_metodika_qo'shish_va_ayirishni_o'rgatish_metodikasi.pdf",
+    type: "pdf",
+  },
+  {
+    title: "Yordamchi 5 donachasi usulida qo'shish va ayirish uchun misollar",
+    link: "https://vpsserver.kerek.uz/files/Yordamchi_5_donachasi_usulida_qo'shish_va_ayirish_uchun_misollar.pdf",
+    type: "pdf",
   },
 ];

@@ -2,18 +2,17 @@ import { useState } from "react";
 import FlashAnzanCard from "./flash-anzan-card";
 import FlashAnzanCardComponent from "./flash-anzan-card-game";
 import { useSelector } from "react-redux";
-import Sidebar from "../components/sidebar";
 
 function FlashAnzanCardWrapper() {
   const [gameStarted, setGameStarted] = useState(false);
   const { user } = useSelector((state) => state.user);
   const [settings, setSettings] = useState({
     mode: "single", // 'single' yoki 'auditorium'
-    digitCount: 1, // 1, 2 yoki 3
+    digitCount: 1, // 1, 2 yoki 3 (endi ishlatilmaydi, lekin compatibility uchun saqlanadi)
     regularity: 1.0, // Vaqt sekundlarda
-    displayCount: 1, // Ko‘rsatish soni
+    displayCount: 1, // Ko'rsatish soni (endi ishlatilmaydi)
     sequenceLength: 1, // Ketma-ket kartalar soni
-    theme: "cards", // "numbers" yoki "cards"
+    theme: "cards", // "cards" (yangi 0-99 flash card system)
   });
 
   const startGame = (newSettings) => {

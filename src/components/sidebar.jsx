@@ -26,6 +26,7 @@ const Sidebar = ({ active, onClose }) => {
   }, []);
 
   // Define menu items with roles
+
   const menuItems = [
     {
       title: "Video Darslar",
@@ -142,6 +143,45 @@ const Sidebar = ({ active, onClose }) => {
                 <span>{item.title}</span>
               </button>
             ))}
+            {role == "student" &&
+              [
+                {
+                  title: "DragGame",
+                  icon: game,
+                  path: "https://learningapps.org/watch?v=pewo1j52t25",
+                  roles: ["student"], // Only for students
+                  isExternal: true,
+                },
+                {
+                  title: "DragGame2",
+                  icon: game,
+                  path: "https://learningapps.org/watch?v=pwsxkq78325",
+                  roles: ["student"], // Only for students
+                  isExternal: true,
+                },
+              ].map((item) => (
+                <a
+                  key={item.title}
+                  href={item.path}
+                  className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
+                  ${
+                    active === item.title
+                      ? "bg-gray-100 text-[#1D2B53]"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  {typeof item.icon === "string" ? (
+                    <img
+                      src={item.icon}
+                      alt={item.title}
+                      className="w-5 h-5 object-contain"
+                    />
+                  ) : (
+                    <item.icon className="w-5 h-5" />
+                  )}
+                  <span>{item.title}</span>
+                </a>
+              ))}
           </nav>
         </div>
         {/* Logout Button */}

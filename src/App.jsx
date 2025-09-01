@@ -11,8 +11,25 @@ import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/dashboard";
 import MemoryGame from "./pages/memory-game";
 import Certificate from "./pages/sertificat";
+import { useEffect } from "react";
+import { initializeFlashCardsCache } from "./hooks/useGlobalFlashCardsPreloader";
 
 function App() {
+  useEffect(() => {
+    // Sayt yuklanganda darhol flash cards cache-ni boshlash
+    const startCachePreload = async () => {
+      try {
+        console.log("Flash cards cache yuklanish boshlandi...");
+        await initializeFlashCardsCache();
+        console.log("Flash cards cache tayyor!");
+      } catch (error) {
+        console.error("Flash cards cache yuklanishida xatolik:", error);
+      }
+    };
+
+    // Cache yuklanishini background-da boshlash
+    startCachePreload();
+  }, []);
   return (
     <>
       <Toaster position="top-right" />
