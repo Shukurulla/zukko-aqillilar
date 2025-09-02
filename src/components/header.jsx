@@ -23,26 +23,6 @@ const navItems = [
     path: "#course-programm",
     icon: Widgets,
   },
-  {
-    label: "Materiallar",
-    path: "#materials",
-    icon: Note,
-  },
-  {
-    label: "Video sharhlar",
-    path: "#comments",
-    icon: PasswordCheck,
-  },
-  {
-    label: "Flash kartalar",
-    path: "/flash-card",
-    icon: MoreSquare,
-  },
-  {
-    label: "Flash Anzan",
-    path: "/flash-anzan",
-    icon: Computing,
-  },
 ];
 
 const Header = () => {

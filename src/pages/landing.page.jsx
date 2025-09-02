@@ -54,10 +54,6 @@ const LandingPage = () => {
 
         {/* <MaterialsSlider /> */}
 
-        <section id="comments" className="container px-4 py-12 md:py-20">
-          <VideoReviewsSlider />
-        </section>
-
         {/* Footer */}
         <footer className="container px-4 py-12 md:py-20">
           <div className="bg-[#F2F5F9] rounded-3xl lg:rounded-[64px] p-8 md:p-12 lg:p-16">

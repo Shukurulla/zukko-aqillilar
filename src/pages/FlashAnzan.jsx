@@ -159,12 +159,12 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
               type="number"
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
-              className="w-48 p-3 border rounded-lg text-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-72 p-3 border rounded-lg text-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-600"
               autoFocus
             />
             <button
               type="submit"
-              className="w-48 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              className="w-48 p-3 border rounded-lg mx-3 text-white text-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-600 bg-blue-600 "
             >
               Tasdiqlash
             </button>
