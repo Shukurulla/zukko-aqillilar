@@ -158,7 +158,7 @@ export default function FlashAnzanComponent({ settings, onEnd }) {
               <img
                 src={currentCard.imagePath}
                 alt={`Flash card ${currentCard.number}`}
-                className="w-64 h-64 object-contain border-2 border-gray-200 rounded-lg shadow-lg"
+                className="w-96 h-96 object-contain border-2 border-gray-200 rounded-lg"
               />
               {/* Debug info - ishlab chiqishda yoqish mumkin */}
               {/* <p className="text-xs text-gray-400 mt-2">
