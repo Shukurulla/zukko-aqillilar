@@ -9,7 +9,7 @@ import {
   VideoHeaderIcon,
 } from "../assets";
 import { useNavigate } from "react-router-dom";
-import { FiX, FiHome, FiLogOut, FiAward } from "react-icons/fi";
+import { FiX, FiHome, FiLogOut, FiAward, FiPlay } from "react-icons/fi";
 import Logo from "./logo";
 
 const Sidebar = ({ active, onClose }) => {
@@ -26,7 +26,6 @@ const Sidebar = ({ active, onClose }) => {
   }, []);
 
   // Define menu items with roles
-
   const menuItems = [
     {
       title: "Video Darslar",
@@ -56,6 +55,18 @@ const Sidebar = ({ active, onClose }) => {
       title: "Memory Game",
       icon: game,
       path: "/dashboard/memory-game",
+      roles: ["student"], // Only for students
+    },
+    {
+      title: "O'yinlar",
+      icon: FiPlay,
+      path: "/dashboard/games",
+      roles: ["student"], // Only for students
+    },
+    {
+      title: "Ertak tuzish",
+      icon: game,
+      path: "/dashboard/story-game",
       roles: ["student"], // Only for students
     },
     {
@@ -106,7 +117,7 @@ const Sidebar = ({ active, onClose }) => {
       )}
 
       {/* Sidebar component */}
-      <aside className="w-full  min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
+      <aside className="w-full min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
             <Logo />
@@ -143,45 +154,6 @@ const Sidebar = ({ active, onClose }) => {
                 <span>{item.title}</span>
               </button>
             ))}
-            {role == "student" &&
-              [
-                {
-                  title: "DragGame",
-                  icon: game,
-                  path: "https://learningapps.org/watch?v=pewo1j52t25",
-                  roles: ["student"], // Only for students
-                  isExternal: true,
-                },
-                {
-                  title: "DragGame2",
-                  icon: game,
-                  path: "https://learningapps.org/watch?v=pwsxkq78325",
-                  roles: ["student"], // Only for students
-                  isExternal: true,
-                },
-              ].map((item) => (
-                <a
-                  key={item.title}
-                  href={item.path}
-                  className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm font-medium w-full text-left transition
-                  ${
-                    active === item.title
-                      ? "bg-gray-100 text-[#1D2B53]"
-                      : "text-gray-500 hover:bg-gray-50"
-                  }`}
-                >
-                  {typeof item.icon === "string" ? (
-                    <img
-                      src={item.icon}
-                      alt={item.title}
-                      className="w-5 h-5 object-contain"
-                    />
-                  ) : (
-                    <item.icon className="w-5 h-5" />
-                  )}
-                  <span>{item.title}</span>
-                </a>
-              ))}
           </nav>
         </div>
         {/* Logout Button */}

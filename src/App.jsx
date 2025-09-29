@@ -11,6 +11,8 @@ import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/dashboard";
 import MemoryGame from "./pages/memory-game";
 import Certificate from "./pages/sertificat";
+import GamesPage from "./pages/GamePage";
+import StoryGame from "./pages/StoryGame";
 import { useEffect } from "react";
 import { initializeFlashCardsCache } from "./hooks/useGlobalFlashCardsPreloader";
 
@@ -30,6 +32,7 @@ function App() {
     // Cache yuklanishini background-da boshlash
     startCachePreload();
   }, []);
+
   return (
     <>
       <Toaster position="top-right" />
@@ -67,6 +70,14 @@ function App() {
               page={"Flash Kartalar"}
             />
           }
+        />
+        <Route
+          path="/dashboard/games"
+          element={<Layout activePage={<GamesPage />} page={"O'yinlar"} />}
+        />
+        <Route
+          path="/dashboard/story-game"
+          element={<Layout activePage={<StoryGame />} page={"Ertak tuzish"} />}
         />
         <Route
           path="/dashboard/certificate"
