@@ -15,7 +15,7 @@ import GamesPage from "./pages/GamePage";
 import StoryGame from "./pages/StoryGame";
 import { useEffect } from "react";
 import { initializeFlashCardsCache } from "./hooks/useGlobalFlashCardsPreloader";
-
+import Cartoons from "./pages/Cartoons";
 function App() {
   useEffect(() => {
     // Sayt yuklanganda darhol flash cards cache-ni boshlash
@@ -70,6 +70,10 @@ function App() {
               page={"Flash Kartalar"}
             />
           }
+        />
+        <Route
+          path="/dashboard/cartoons"
+          element={<Layout activePage={<Cartoons />} page={"Multfilmlar"} />}
         />
         <Route
           path="/dashboard/games"

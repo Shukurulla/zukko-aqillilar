@@ -1,3 +1,4 @@
+// src/pages/GameSettings.jsx
 import { useState } from "react";
 import {
   FiArrowLeft,
@@ -8,9 +9,13 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function GameSettings({ onStart, initialSettings }) {
-  const [settings, setSettings] = useState(initialSettings);
-  const [gameMode, setGameMode] = useState("single"); // 'single' or 'audience'
+  const [settings, setSettings] = useState({
+    ...initialSettings,
+    method: "simple", // Yangi: hisoblash usuli
+  });
+  const [gameMode, setGameMode] = useState("single");
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSettings((prev) => ({ ...prev, [name]: value }));
@@ -60,6 +65,7 @@ export default function GameSettings({ onStart, initialSettings }) {
   const handleNextReg = () => {
     setRegStartIndex((prev) => (prev + 1) % regularityTimes.length);
   };
+
   const token = localStorage.getItem("flash-jwt");
 
   return (
@@ -107,45 +113,108 @@ export default function GameSettings({ onStart, initialSettings }) {
         </div>
       </div>
 
-      {/* Raqamlar soni */}
+      {/* Hisoblash usuli - YANGI */}
       <div className="mb-4 flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">Raqamlar soni</h2>
-        <div className="flex gap-2">
+        <h2 className="text-base font-bold text-blue-600">Hisoblash usuli</h2>
+        <div className="flex gap-2 flex-wrap">
           <button
-            className={`px-4 py-1 text-sm ${
-              settings.digitCount == 1
+            className={`px-3 py-1 text-sm ${
+              settings.method === "simple"
                 ? "text-blue-600 font-semibold bg-white shadow-sm"
                 : "text-gray-400 bg-gray-100"
             } rounded-full`}
-            onClick={() => setSettings((prev) => ({ ...prev, digitCount: 1 }))}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, method: "simple" }))
+            }
           >
-            1 xonali
+            Oddiy (1-4)
           </button>
           <button
-            className={`px-4 py-1 text-sm ${
-              settings.digitCount == 2
+            className={`px-3 py-1 text-sm ${
+              settings.method === "helper5"
                 ? "text-blue-600 font-semibold bg-white shadow-sm"
                 : "text-gray-400 bg-gray-100"
             } rounded-full`}
-            onClick={() => setSettings((prev) => ({ ...prev, digitCount: 2 }))}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, method: "helper5" }))
+            }
           >
-            2 xonali
+            Yordamchi 5
           </button>
           <button
-            className={`px-4 py-1 text-sm ${
-              settings.digitCount == 3
+            className={`px-3 py-1 text-sm ${
+              settings.method === "helper10"
                 ? "text-blue-600 font-semibold bg-white shadow-sm"
                 : "text-gray-400 bg-gray-100"
             } rounded-full`}
-            onClick={() => setSettings((prev) => ({ ...prev, digitCount: 3 }))}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, method: "helper10" }))
+            }
           >
-            3 xonali
+            Yordamchi 10
+          </button>
+          <button
+            className={`px-3 py-1 text-sm ${
+              settings.method === "mixed"
+                ? "text-blue-600 font-semibold bg-white shadow-sm"
+                : "text-gray-400 bg-gray-100"
+            } rounded-full`}
+            onClick={() =>
+              setSettings((prev) => ({ ...prev, method: "mixed" }))
+            }
+          >
+            Aralash
           </button>
         </div>
       </div>
 
+      {/* Raqamlar soni (faqat aralash usulda ko'rinadi) */}
+      {settings.method === "mixed" && (
+        <div className="mb-4 flex items-center gap-4 justify-between">
+          <h2 className="text-base font-bold text-blue-600">Raqamlar soni</h2>
+          <div className="flex gap-2">
+            <button
+              className={`px-4 py-1 text-sm ${
+                settings.digitCount == 1
+                  ? "text-blue-600 font-semibold bg-white shadow-sm"
+                  : "text-gray-400 bg-gray-100"
+              } rounded-full`}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, digitCount: 1 }))
+              }
+            >
+              1 xonali
+            </button>
+            <button
+              className={`px-4 py-1 text-sm ${
+                settings.digitCount == 2
+                  ? "text-blue-600 font-semibold bg-white shadow-sm"
+                  : "text-gray-400 bg-gray-100"
+              } rounded-full`}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, digitCount: 2 }))
+              }
+            >
+              2 xonali
+            </button>
+            <button
+              className={`px-4 py-1 text-sm ${
+                settings.digitCount == 3
+                  ? "text-blue-600 font-semibold bg-white shadow-sm"
+                  : "text-gray-400 bg-gray-100"
+              } rounded-full`}
+              onClick={() =>
+                setSettings((prev) => ({ ...prev, digitCount: 3 }))
+              }
+            >
+              3 xonali
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Muntazamlik */}
-      {/* DESKTOP ko‘rinish */}
+      {/* DESKTOP ko'rinish */}
       <div className="hidden sm:flex mb-4 flex-wrap gap-2 items-center justify-between">
         <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
         <div className="flex flex-wrap gap-2">
@@ -282,10 +351,7 @@ export default function GameSettings({ onStart, initialSettings }) {
         </div>
       </div>
 
-      {/* Qatorlar soni */}
-
-      {/* Ketma-ket misollar soni */}
-
+      {/* Ketma-ket misollar soni - DESKTOP */}
       <div className="mb-6 hidden sm:flex items-center gap-4 justify-between">
         <h2 className="text-base font-bold text-blue-600">
           Ketma-ket misollar soni
@@ -323,6 +389,8 @@ export default function GameSettings({ onStart, initialSettings }) {
           ))}
         </div>
       </div>
+
+      {/* Ketma-ket misollar soni - MOBILE */}
       <div className="mb-6 flex items-center justify-between md:hidden">
         <h2 className="text-base font-bold text-blue-600 mb-2">
           Ketma-ket misollar soni
@@ -374,6 +442,23 @@ export default function GameSettings({ onStart, initialSettings }) {
           </button>
         </div>
       </div>
+
+      {/* Usul haqida ma'lumot */}
+      {settings.method && (
+        <div className="mb-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+          <p className="font-semibold mb-1">Tanlangan usul:</p>
+          <p>
+            {settings.method === "simple" &&
+              "Oddiy usulda faqat 1-4 sonlar ishlatiladi. Qo'shishda natija 44 dan oshmaydi."}
+            {settings.method === "helper5" &&
+              "Yordamchi 5 usulida 5 soni qo'shiladi. Masalan: 1+5, 2+5, 3+5, 4+5"}
+            {settings.method === "helper10" &&
+              "Yordamchi 10 usulida 10 gacha bo'lgan sonlar ishlatiladi."}
+            {settings.method === "mixed" &&
+              "Aralash usulda barcha usullar birgalikda ishlatiladi."}
+          </p>
+        </div>
+      )}
 
       {/* Start button */}
       <div className="flex justify-center">

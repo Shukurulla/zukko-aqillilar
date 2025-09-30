@@ -1,3 +1,4 @@
+// src/components/sidebar.jsx
 import { useState, useEffect } from "react";
 import {
   Computing,
@@ -9,15 +10,14 @@ import {
   VideoHeaderIcon,
 } from "../assets";
 import { useNavigate } from "react-router-dom";
-import { FiX, FiHome, FiLogOut, FiAward, FiPlay } from "react-icons/fi";
+import { FiX, FiHome, FiLogOut, FiAward, FiPlay, FiFilm } from "react-icons/fi";
 import Logo from "./logo";
 
 const Sidebar = ({ active, onClose }) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [role, setRole] = useState(""); // Initialize with empty string
+  const [role, setRole] = useState("");
 
-  // Get role when component mounts
   useEffect(() => {
     const userRole = localStorage.getItem("role");
     if (userRole) {
@@ -25,55 +25,60 @@ const Sidebar = ({ active, onClose }) => {
     }
   }, []);
 
-  // Define menu items with roles
   const menuItems = [
     {
       title: "Video Darslar",
       path: "/dashboard",
       icon: VideoHeaderIcon,
-      roles: ["student", "teacher"], // Available for both roles
+      roles: ["student", "teacher"],
     },
     {
       title: "Materiallar",
       icon: Note,
       path: "/dashboard/materials",
-      roles: ["teacher"], // Only for teachers
+      roles: ["teacher"],
     },
     {
       title: "Flash Kartalar",
       icon: MoreSquare,
       path: "/dashboard/flash-card",
-      roles: ["student"], // Available for both roles
+      roles: ["student"],
     },
     {
       title: "Flash Anzan",
       icon: Computing,
       path: "/dashboard/flash-anzan",
-      roles: ["student"], // Available for both roles
+      roles: ["student"],
     },
     {
       title: "Memory Game",
       icon: game,
       path: "/dashboard/memory-game",
-      roles: ["student"], // Only for students
+      roles: ["student"],
     },
     {
       title: "O'yinlar",
       icon: FiPlay,
       path: "/dashboard/games",
-      roles: ["student"], // Only for students
+      roles: ["student"],
     },
     {
       title: "Ertak tuzish",
       icon: game,
       path: "/dashboard/story-game",
-      roles: ["student"], // Only for students
+      roles: ["student"],
+    },
+    {
+      title: "Multfilmlar",
+      icon: FiFilm,
+      path: "/dashboard/cartoons",
+      roles: ["student"],
     },
     {
       title: "Sertifikat",
       icon: FiAward,
       path: "/dashboard/certificate",
-      roles: ["student"], // Only for students
+      roles: ["student"],
     },
   ];
 
@@ -84,14 +89,13 @@ const Sidebar = ({ active, onClose }) => {
     onClose();
   };
 
-  // Filter menu items based on the user's role
   const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(role)
   );
 
   return (
     <>
-      {/* Logout Confirmation Modal */}
+      {/* Logout Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full">
@@ -116,7 +120,7 @@ const Sidebar = ({ active, onClose }) => {
         </div>
       )}
 
-      {/* Sidebar component */}
+      {/* Sidebar */}
       <aside className="w-full min-h-[200px] lg:min-h-screen bg-white px-4 py-4 shadow-sm flex flex-col">
         <div>
           <div className="flex items-center justify-between mb-6">
@@ -126,7 +130,7 @@ const Sidebar = ({ active, onClose }) => {
             </button>
           </div>
 
-          {/* Menu items - filtered based on role */}
+          {/* Menu items */}
           <nav className="flex flex-col gap-2">
             {filteredMenuItems.map((item) => (
               <button
@@ -156,6 +160,7 @@ const Sidebar = ({ active, onClose }) => {
             ))}
           </nav>
         </div>
+
         {/* Logout Button */}
         <button
           onClick={() => setShowLogoutModal(true)}
