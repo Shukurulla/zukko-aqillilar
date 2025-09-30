@@ -16,6 +16,7 @@ import StoryGame from "./pages/StoryGame";
 import { useEffect } from "react";
 import { initializeFlashCardsCache } from "./hooks/useGlobalFlashCardsPreloader";
 import Cartoons from "./pages/Cartoons";
+import VirtualAbacus from "./pages/VirtualAbacus";
 function App() {
   useEffect(() => {
     // Sayt yuklanganda darhol flash cards cache-ni boshlash
@@ -86,6 +87,12 @@ function App() {
         <Route
           path="/dashboard/certificate"
           element={<Layout activePage={<Certificate />} page={"Sertifikat"} />}
+        />
+        <Route
+          path="/dashboard/virtual-abacus"
+          element={
+            <Layout activePage={<VirtualAbacus />} page={"Virtual Abakus"} />
+          }
         />
       </Routes>
     </>

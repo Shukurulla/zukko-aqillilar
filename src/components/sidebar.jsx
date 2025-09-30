@@ -80,6 +80,12 @@ const Sidebar = ({ active, onClose }) => {
       path: "/dashboard/certificate",
       roles: ["student"],
     },
+    {
+      title: "Virtual Abakus",
+      icon: Computing, // yoki boshqa mos icon
+      path: "/dashboard/virtual-abacus",
+      roles: ["teacher"],
+    },
   ];
 
   const handleLogout = () => {

@@ -1,473 +1,262 @@
 // src/pages/GameSettings.jsx
 import { useState } from "react";
-import {
-  FiArrowLeft,
-  FiArrowRight,
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
+import { FiPlay, FiChevronLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 export default function GameSettings({ onStart, initialSettings }) {
   const [settings, setSettings] = useState({
     ...initialSettings,
-    method: "simple", // Yangi: hisoblash usuli
+    method: "simple",
   });
   const [gameMode, setGameMode] = useState("single");
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSettings((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onStart({ ...settings, gameMode });
   };
 
-  const sequenceNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const [startIndex, setStartIndex] = useState(0);
-
-  const visibleNumbers = [
-    sequenceNumbers[startIndex % sequenceNumbers.length],
-    sequenceNumbers[(startIndex + 1) % sequenceNumbers.length],
-    sequenceNumbers[(startIndex + 2) % sequenceNumbers.length],
-  ];
-
-  const handlePrev = () => {
-    setStartIndex(
-      (prev) => (prev - 1 + sequenceNumbers.length) % sequenceNumbers.length
-    );
-  };
-
-  const handleNext = () => {
-    setStartIndex((prev) => (prev + 1) % sequenceNumbers.length);
-  };
-
   const regularityTimes = [
     0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2, 2.5, 3,
   ];
-  const [regStartIndex, setRegStartIndex] = useState(1);
-
-  const visibleRegularities = [
-    regularityTimes[regStartIndex % regularityTimes.length],
-    regularityTimes[(regStartIndex + 1) % regularityTimes.length],
-    regularityTimes[(regStartIndex + 2) % regularityTimes.length],
-  ];
-
-  const handlePrevReg = () => {
-    setRegStartIndex(
-      (prev) => (prev - 1 + regularityTimes.length) % regularityTimes.length
-    );
-  };
-
-  const handleNextReg = () => {
-    setRegStartIndex((prev) => (prev + 1) % regularityTimes.length);
-  };
 
   const token = localStorage.getItem("flash-jwt");
 
   return (
-    <div className="bg-white h-screen w-[100%]  md:w-[70%] lg:w-[70%] mx-auto  p-5">
-      {token ? (
-        ""
-      ) : (
-        <div className="absolute top-5 left-5">
-          <div
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600"
-          >
-            <FiChevronLeft />
-          </div>
-        </div>
-      )}
-      <h1 className="text-2xl font-bold text-center mb-6">
-        Flash <span className="text-blue-600">Anzan</span>
-      </h1>
-
-      {/* O'yin rejimi */}
-      <div className="mb-4 flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">O'yin rejimi</h2>
-        <div className="flex gap-2">
-          <button
-            className={`px-4 py-1 text-sm ${
-              gameMode === "single"
-                ? "text-blue-600 font-semibold bg-white rounded-full shadow-sm"
-                : "text-gray-400 font-semibold bg-gray-100 rounded-full"
-            }`}
-            onClick={() => setGameMode("single")}
-          >
-            Bir odamlik
-          </button>
-          <button
-            className={`px-4 py-1 text-sm ${
-              gameMode === "audience"
-                ? "text-blue-600 font-semibold bg-white rounded-full shadow-sm"
-                : "text-gray-400 font-semibold bg-gray-100 rounded-full"
-            }`}
-            onClick={() => setGameMode("audience")}
-          >
-            Auditoriya
-          </button>
-        </div>
-      </div>
-
-      {/* Hisoblash usuli - YANGI */}
-      <div className="mb-4 flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">Hisoblash usuli</h2>
-        <div className="flex gap-2 flex-wrap">
-          <button
-            className={`px-3 py-1 text-sm ${
-              settings.method === "simple"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, method: "simple" }))
-            }
-          >
-            Oddiy (1-4)
-          </button>
-          <button
-            className={`px-3 py-1 text-sm ${
-              settings.method === "helper5"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, method: "helper5" }))
-            }
-          >
-            Yordamchi 5
-          </button>
-          <button
-            className={`px-3 py-1 text-sm ${
-              settings.method === "helper10"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, method: "helper10" }))
-            }
-          >
-            Yordamchi 10
-          </button>
-          <button
-            className={`px-3 py-1 text-sm ${
-              settings.method === "mixed"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, method: "mixed" }))
-            }
-          >
-            Aralash
-          </button>
-        </div>
-      </div>
-
-      {/* Raqamlar soni (faqat aralash usulda ko'rinadi) */}
-      {settings.method === "mixed" && (
-        <div className="mb-4 flex items-center gap-4 justify-between">
-          <h2 className="text-base font-bold text-blue-600">Raqamlar soni</h2>
-          <div className="flex gap-2">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="w-6/5">
+        {!token && (
+          <div className="absolute top-5 left-5">
             <button
-              className={`px-4 py-1 text-sm ${
-                settings.digitCount == 1
-                  ? "text-blue-600 font-semibold bg-white shadow-sm"
-                  : "text-gray-400 bg-gray-100"
-              } rounded-full`}
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, digitCount: 1 }))
-              }
+              onClick={() => navigate(-1)}
+              className="w-10 h-10 flex items-center justify-center text-white text-2xl rounded-full shadow-lg cursor-pointer bg-blue-600 hover:bg-blue-700 transition"
             >
-              1 xonali
-            </button>
-            <button
-              className={`px-4 py-1 text-sm ${
-                settings.digitCount == 2
-                  ? "text-blue-600 font-semibold bg-white shadow-sm"
-                  : "text-gray-400 bg-gray-100"
-              } rounded-full`}
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, digitCount: 2 }))
-              }
-            >
-              2 xonali
-            </button>
-            <button
-              className={`px-4 py-1 text-sm ${
-                settings.digitCount == 3
-                  ? "text-blue-600 font-semibold bg-white shadow-sm"
-                  : "text-gray-400 bg-gray-100"
-              } rounded-full`}
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, digitCount: 3 }))
-              }
-            >
-              3 xonali
+              <FiChevronLeft />
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Muntazamlik */}
-      {/* DESKTOP ko'rinish */}
-      <div className="hidden sm:flex mb-4 flex-wrap gap-2 items-center justify-between">
-        <h2 className="text-base font-bold text-blue-600">Muntazamlik</h2>
-        <div className="flex flex-wrap gap-2">
-          {regularityTimes.map((time) => (
-            <button
-              key={time}
-              className="w-9 h-9 flex items-center justify-center rounded-full text-md"
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, regularity: time }))
-              }
-            >
-              <svg width="40" height="50" viewBox="0 0 40 40" fill="none">
-                <path
-                  d="M20 5L35 20L20 35L5 20L20 5Z"
-                  fill={
-                    settings.regularity === time || time == +settings.digitCount
-                      ? "#3B82F6"
-                      : "#E5E7EB"
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Flash <span className="text-blue-600">Anzan</span>
+          </h1>
+          <p className="text-gray-600">O'yin sozlamalarini tanlang</p>
+        </div>
+
+        {/* Settings Card */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 space-y-6">
+          {/* Game Mode */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              O'yin rejimi
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                className={`py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
+                  gameMode === "single"
+                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-200 scale-105"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                onClick={() => setGameMode("single")}
+              >
+                Bir odamlik
+              </button>
+              <button
+                className={`py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
+                  gameMode === "audience"
+                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-200 scale-105"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                onClick={() => setGameMode("audience")}
+              >
+                Auditoriya
+              </button>
+            </div>
+          </div>
+
+          {/* Hisoblash usuli */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              Hisoblash usuli
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { value: "simple", label: "Oddiy (1-4)" },
+                { value: "helper5", label: "Yordamchi 5" },
+                { value: "helper10", label: "Yordamchi 10" },
+                { value: "mixed", label: "Aralash" },
+              ].map((method) => (
+                <button
+                  key={method.value}
+                  className={`py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    settings.method === method.value
+                      ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-200"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                  onClick={() =>
+                    setSettings((prev) => ({ ...prev, method: method.value }))
                   }
-                  stroke={
-                    settings.regularity === time || time == +settings.digitCount
-                      ? "#3B82F6"
-                      : "#D1D5DB"
-                  }
-                  strokeWidth="2"
-                />
-                <text
-                  x="20"
-                  y="24"
-                  fontSize="12"
-                  fill={
-                    settings.regularity === time || time == +settings.digitCount
-                      ? "#FFFFFF"
-                      : "#6B7280"
-                  }
-                  textAnchor="middle"
-                  fontWeight="bold"
                 >
-                  {time}
-                </text>
-              </svg>
-            </button>
-          ))}
-        </div>
-      </div>
+                  {method.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      {/* MOBILE slider */}
-      <div className="md:hidden flex items-center justify-between mb-4">
-        <h2 className="text-base font-bold text-blue-600 mb-2">Muntazamlik</h2>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handlePrevReg}
-            className="text-blue-600 text-lg font-bold"
-          >
-            {<FiChevronLeft />}
-          </button>
-          {visibleRegularities.map((time) => (
-            <button
-              key={time}
-              className="w-10 h-10 flex items-center justify-center rounded-full"
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, regularity: time }))
-              }
-            >
-              <svg width="40" height="50" viewBox="0 0 40 40" fill="none">
-                <path
-                  d="M20 5L35 20L20 35L5 20L20 5Z"
-                  fill={settings.regularity === time ? "#3B82F6" : "#E5E7EB"}
-                  stroke={settings.regularity === time ? "#3B82F6" : "#D1D5DB"}
-                  strokeWidth="2"
-                />
-                <text
-                  x="20"
-                  y="24"
-                  fontSize="12"
-                  fill={settings.regularity === time ? "#FFFFFF" : "#6B7280"}
-                  textAnchor="middle"
-                  fontWeight="bold"
-                >
-                  {time}
-                </text>
-              </svg>
-            </button>
-          ))}
-          <button
-            onClick={handleNextReg}
-            className="text-blue-600 text-lg font-bold"
-          >
-            {<FiChevronRight />}
-          </button>
-        </div>
-      </div>
+          {/* Raqamlar soni */}
+          {settings.method === "mixed" && (
+            <div className="space-y-3">
+              <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                Raqamlar soni
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                {[1, 2, 3].map((count) => (
+                  <button
+                    key={count}
+                    className={`py-3 rounded-xl font-medium transition-all duration-200 ${
+                      settings.digitCount == count
+                        ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg shadow-green-200"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                    onClick={() =>
+                      setSettings((prev) => ({ ...prev, digitCount: count }))
+                    }
+                  >
+                    {count} xonali
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
-      {/* Tema */}
-      <div className="mb-4 flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">Tema</h2>
-        <div className="flex gap-2">
-          <button
-            className={`px-4 py-1 text-sm ${
-              settings.operation === "add"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, operation: "add" }))
-            }
-          >
-            Qo'shish
-          </button>
-          <button
-            className={`px-4 py-1 text-sm ${
-              settings.operation === "subtract"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, operation: "subtract" }))
-            }
-          >
-            Ayirish
-          </button>
-          <button
-            className={`px-4 py-1 text-sm ${
-              settings.operation === "mixed"
-                ? "text-blue-600 font-semibold bg-white shadow-sm"
-                : "text-gray-400 bg-gray-100"
-            } rounded-full`}
-            onClick={() =>
-              setSettings((prev) => ({ ...prev, operation: "mixed" }))
-            }
-          >
-            Aralash
-          </button>
-        </div>
-      </div>
+          {/* Muntazamlik */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                Muntazamlik
+              </label>
+              <span className="text-blue-600 font-bold text-lg">
+                {settings.regularity}s
+              </span>
+            </div>
+            <div className="relative">
+              <input
+                type="range"
+                min="0"
+                max={regularityTimes.length - 1}
+                value={regularityTimes.indexOf(settings.regularity)}
+                onChange={(e) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    regularity: regularityTimes[e.target.value],
+                  }))
+                }
+                className="w-full h-3 rounded-full appearance-none cursor-pointer"
+                style={{
+                  background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${
+                    (regularityTimes.indexOf(settings.regularity) /
+                      (regularityTimes.length - 1)) *
+                    100
+                  }%, #E5E7EB ${
+                    (regularityTimes.indexOf(settings.regularity) /
+                      (regularityTimes.length - 1)) *
+                    100
+                  }%, #E5E7EB 100%)`,
+                }}
+              />
+            </div>
+          </div>
 
-      {/* Ketma-ket misollar soni - DESKTOP */}
-      <div className="mb-6 hidden sm:flex items-center gap-4 justify-between">
-        <h2 className="text-base font-bold text-blue-600">
-          Ketma-ket misollar soni
-        </h2>
-        <div className="flex flex-wrap gap-1">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-            <button
-              key={num}
-              className={`w-9 h-9 flex items-center justify-center rounded-full text-xs`}
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, sequenceLength: num }))
-              }
-            >
-              <svg width="40" height="50" viewBox="0 0 40 40" fill="none">
-                <path
-                  d="M20 5L35 20L20 35L5 20L20 5Z"
-                  fill={settings.sequenceLength == num ? "#3B82F6" : "#E5E7EB"}
-                  stroke={
-                    settings.sequenceLength == num ? "#3B82F6" : "#D1D5DB"
+          {/* Tema */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              Amallar
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { value: "add", label: "Qo'shish", icon: "+" },
+                { value: "subtract", label: "Ayirish", icon: "−" },
+                { value: "mixed", label: "Aralash", icon: "±" },
+              ].map((op) => (
+                <button
+                  key={op.value}
+                  className={`py-3 rounded-xl font-medium transition-all duration-200 ${
+                    settings.operation === op.value
+                      ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-200"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                  onClick={() =>
+                    setSettings((prev) => ({ ...prev, operation: op.value }))
                   }
-                  strokeWidth="2"
-                />
-                <text
-                  x="20"
-                  y="24"
-                  fontSize="12"
-                  fill={settings.sequenceLength == num ? "#FFFFFF" : "#6B7280"}
-                  textAnchor="middle"
-                  fontWeight="bold"
                 >
-                  {num}
-                </text>
-              </svg>
-            </button>
-          ))}
-        </div>
-      </div>
+                  <div className="text-2xl mb-1">{op.icon}</div>
+                  <div className="text-xs">{op.label}</div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-      {/* Ketma-ket misollar soni - MOBILE */}
-      <div className="mb-6 flex items-center justify-between md:hidden">
-        <h2 className="text-base font-bold text-blue-600 mb-2">
-          Ketma-ket misollar soni
-        </h2>
-        <div className="flex items-center gap-2">
+          {/* Ketma-ket misollar soni */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                Ketma-ket misollar
+              </label>
+              <span className="text-purple-600 font-bold text-lg">
+                {settings.sequenceLength}
+              </span>
+            </div>
+            <div className="relative">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={settings.sequenceLength}
+                onChange={(e) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    sequenceLength: parseInt(e.target.value),
+                  }))
+                }
+                className="w-full h-3 rounded-full appearance-none cursor-pointer"
+                style={{
+                  background: `linear-gradient(to right, #9333EA 0%, #9333EA ${
+                    ((settings.sequenceLength - 1) / 9) * 100
+                  }%, #E5E7EB ${
+                    ((settings.sequenceLength - 1) / 9) * 100
+                  }%, #E5E7EB 100%)`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Usul haqida ma'lumot */}
+          {settings.method && (
+            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+              <p className="text-sm text-blue-800">
+                <span className="font-semibold">Tanlangan usul:</span>{" "}
+                {settings.method === "simple" &&
+                  "Oddiy usulda faqat 1-4 sonlar ishlatiladi. Qo'shishda natija 44 dan oshmaydi."}
+                {settings.method === "helper5" &&
+                  "Yordamchi 5 usulida 5 soni qo'shiladi. Masalan: 1+5, 2+5, 3+5, 4+5"}
+                {settings.method === "helper10" &&
+                  "Yordamchi 10 usulida 10 gacha bo'lgan sonlar ishlatiladi."}
+                {settings.method === "mixed" &&
+                  "Aralash usulda barcha usullar birgalikda ishlatiladi."}
+              </p>
+            </div>
+          )}
+
+          {/* Start button */}
           <button
-            onClick={handlePrev}
-            className="text-blue-600 text-lg font-bold"
+            onClick={handleSubmit}
+            className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
           >
-            {<FiChevronLeft />}
-          </button>
-
-          {visibleNumbers.map((num) => (
-            <button
-              key={num}
-              className="w-10 h-10 flex items-center justify-center rounded-full"
-              onClick={() =>
-                setSettings((prev) => ({ ...prev, sequenceLength: num }))
-              }
-            >
-              <svg width="40" height="50" viewBox="0 0 40 40" fill="none">
-                <path
-                  d="M20 5L35 20L20 35L5 20L20 5Z"
-                  fill={settings.sequenceLength === num ? "#3B82F6" : "#E5E7EB"}
-                  stroke={
-                    settings.sequenceLength === num ? "#3B82F6" : "#D1D5DB"
-                  }
-                  strokeWidth="2"
-                />
-                <text
-                  x="20"
-                  y="24"
-                  fontSize="12"
-                  fill={settings.sequenceLength === num ? "#FFFFFF" : "#6B7280"}
-                  textAnchor="middle"
-                  fontWeight="bold"
-                >
-                  {num}
-                </text>
-              </svg>
-            </button>
-          ))}
-
-          <button
-            onClick={handleNext}
-            className="text-blue-600 text-lg font-bold"
-          >
-            {<FiChevronRight />}
+            <FiPlay className="text-xl" />
+            Boshlash
           </button>
         </div>
-      </div>
-
-      {/* Usul haqida ma'lumot */}
-      {settings.method && (
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
-          <p className="font-semibold mb-1">Tanlangan usul:</p>
-          <p>
-            {settings.method === "simple" &&
-              "Oddiy usulda faqat 1-4 sonlar ishlatiladi. Qo'shishda natija 44 dan oshmaydi."}
-            {settings.method === "helper5" &&
-              "Yordamchi 5 usulida 5 soni qo'shiladi. Masalan: 1+5, 2+5, 3+5, 4+5"}
-            {settings.method === "helper10" &&
-              "Yordamchi 10 usulida 10 gacha bo'lgan sonlar ishlatiladi."}
-            {settings.method === "mixed" &&
-              "Aralash usulda barcha usullar birgalikda ishlatiladi."}
-          </p>
-        </div>
-      )}
-
-      {/* Start button */}
-      <div className="flex justify-center">
-        <button
-          onClick={handleSubmit}
-          className="px-10 py-2 bg-blue-600 text-white text-base font-bold rounded-full hover:bg-blue-700 transition duration-200"
-        >
-          Boshlash
-        </button>
       </div>
     </div>
   );
